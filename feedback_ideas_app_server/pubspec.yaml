@@ -1,0 +1,22 @@
+name: feedback_ideas_app_server
+description: Starting point for a Serverpod server.
+# version: 1.0.0
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  serverpod: 2.0.2
+  serverpod_auth_server: 2.0.2
+  sqlite3: ^2.4.4
+  dart_jsonwebtoken: ^2.14.0
+  dotenv: ^4.2.0
+  path: ^1.9.0
+  uuid: ^4.4.2
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
+  http: ^1.2.2
+
+dev_dependencies:
+  lints: '>=3.0.0 <5.0.0'
