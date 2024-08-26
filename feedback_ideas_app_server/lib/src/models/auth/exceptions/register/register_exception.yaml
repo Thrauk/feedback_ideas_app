@@ -1,0 +1,4 @@
+exception: RegisterException
+fields:
+  message: String,
+  type: RegisterExceptionType

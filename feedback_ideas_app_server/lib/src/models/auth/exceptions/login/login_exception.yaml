@@ -1,0 +1,6 @@
+exception: LoginException
+fields:
+  message: String
+  type: LoginExceptionType
+  extra: Map<String, String>?
+

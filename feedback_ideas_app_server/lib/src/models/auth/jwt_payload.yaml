@@ -1,0 +1,7 @@
+class: JwtPayload
+fields:
+  scopes: List<String>
+  userEmail: String
+  expirationTimestamp: int
+  userUuid: String
+  userId: int

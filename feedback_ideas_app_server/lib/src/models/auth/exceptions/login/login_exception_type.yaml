@@ -1,0 +1,5 @@
+enum: LoginExceptionType
+values:
+  - invalidLogin
+  - expiredToken
+  - inactiveAccount

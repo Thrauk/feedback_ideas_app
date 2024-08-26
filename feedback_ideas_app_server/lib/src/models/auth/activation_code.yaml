@@ -1,0 +1,6 @@
+class: ActivationCode
+fields:
+  userUuid: String,
+  activationCode: String,
+  expiryDate: DateTime,
+  isUsed: bool
