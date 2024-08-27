@@ -5,7 +5,7 @@ import 'package:feedback_ideas_app_server/src/repository/auth/smtp_repository.da
 import 'package:feedback_ideas_app_server/src/repository/user/user_repository.dart';
 import 'package:serverpod/serverpod.dart';
 
-class UserEndpoit extends Endpoint {
+class UserEndpoint extends Endpoint {
   Future<bool> register(
     Session session, {
     required String email,
@@ -55,13 +55,11 @@ class UserEndpoit extends Endpoint {
 
     final User user = UserRepository().getUserByEmail(email);
 
-    if (!user.isActivated) {
+    if (user.isActivated == 0) {
       await _sendActivationEmail(user, email);
-      throw (
-        LoginException(
-          message: 'User is not activated!',
-          type: LoginExceptionType.inactiveAccount,
-        ),
+      throw LoginException(
+        message: 'User is not activated!',
+        type: LoginExceptionType.inactiveAccount,
       );
     }
 
@@ -72,6 +70,17 @@ class UserEndpoit extends Endpoint {
       email: email,
     );
     return LoginResponse(token: token);
+  }
+
+  Future<bool> activateAccount(Session session, {required String activationCode}) async {
+    final activationFeedback = UserRepository().activateUserByCode(activationCode);
+    if (!activationFeedback) {
+      throw ActiveAccountException(
+        message: 'Code is invalid or expired',
+        type: ActiveAccountExceptionType.codeInvalidOrExpired,
+      );
+    }
+    return true;
   }
 
   Future<void> _sendActivationEmail(User user, String email) async {

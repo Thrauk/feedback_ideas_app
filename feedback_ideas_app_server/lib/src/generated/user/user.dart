@@ -29,7 +29,7 @@ abstract class User
     required String password,
     required String firstName,
     required String lastName,
-    required bool isActivated,
+    required int isActivated,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -40,7 +40,7 @@ abstract class User
       password: jsonSerialization['password'] as String,
       firstName: jsonSerialization['firstName'] as String,
       lastName: jsonSerialization['lastName'] as String,
-      isActivated: jsonSerialization['isActivated'] as bool,
+      isActivated: jsonSerialization['isActivated'] as int,
     );
   }
 
@@ -56,7 +56,7 @@ abstract class User
 
   String lastName;
 
-  bool isActivated;
+  int isActivated;
 
   User copyWith({
     int? id,
@@ -65,7 +65,7 @@ abstract class User
     String? password,
     String? firstName,
     String? lastName,
-    bool? isActivated,
+    int? isActivated,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -109,7 +109,7 @@ class _UserImpl extends User {
     required String password,
     required String firstName,
     required String lastName,
-    required bool isActivated,
+    required int isActivated,
   }) : super._(
           id: id,
           uuid: uuid,
@@ -128,7 +128,7 @@ class _UserImpl extends User {
     String? password,
     String? firstName,
     String? lastName,
-    bool? isActivated,
+    int? isActivated,
   }) {
     return User(
       id: id is int? ? id : this.id,

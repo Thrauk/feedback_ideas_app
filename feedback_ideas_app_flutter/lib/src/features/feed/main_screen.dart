@@ -1,12 +1,12 @@
-import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/login_form.dart';
+import 'package:feedback_ideas_app_flutter/src/features/feed/main_page_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
-  static const String route = '/login';
-  static const String fullPath = '/login';
+  static const String route = '/feed';
+  static const String fullPath = '/feed';
 
   static String buildFullPath() {
     return fullPath;
@@ -27,11 +27,11 @@ class LoginScreen extends StatelessWidget {
   }
 
   static Widget builder(BuildContext context, GoRouterState state) {
-    return const LoginScreen();
+    return const MainScreen();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const LoginForm();
+    return const MainPageWidget();
   }
 }

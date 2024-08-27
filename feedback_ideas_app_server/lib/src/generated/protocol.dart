@@ -14,15 +14,21 @@ import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'auth/activation_code.dart' as _i4;
 import 'auth/auth_error.dart' as _i5;
-import 'auth/exceptions/login/login_exception.dart' as _i6;
-import 'auth/exceptions/login/login_exception_type.dart' as _i7;
-import 'auth/exceptions/register/register_exception.dart' as _i8;
-import 'auth/exceptions/register/register_exception_type.dart' as _i9;
-import 'auth/jwt_payload.dart' as _i10;
-import 'auth/login_response.dart' as _i11;
-import 'user/user.dart' as _i12;
+import 'auth/exceptions/activate_account/activate_account_exception.dart'
+    as _i6;
+import 'auth/exceptions/activate_account/activate_account_exception_type.dart'
+    as _i7;
+import 'auth/exceptions/login/login_exception.dart' as _i8;
+import 'auth/exceptions/login/login_exception_type.dart' as _i9;
+import 'auth/exceptions/register/register_exception.dart' as _i10;
+import 'auth/exceptions/register/register_exception_type.dart' as _i11;
+import 'auth/jwt_payload.dart' as _i12;
+import 'auth/login_response.dart' as _i13;
+import 'user/user.dart' as _i14;
 export 'auth/activation_code.dart';
 export 'auth/auth_error.dart';
+export 'auth/exceptions/activate_account/activate_account_exception.dart';
+export 'auth/exceptions/activate_account/activate_account_exception_type.dart';
 export 'auth/exceptions/login/login_exception.dart';
 export 'auth/exceptions/login/login_exception_type.dart';
 export 'auth/exceptions/register/register_exception.dart';
@@ -55,26 +61,32 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i5.AuthError) {
       return _i5.AuthError.fromJson(data) as T;
     }
-    if (t == _i6.LoginException) {
-      return _i6.LoginException.fromJson(data) as T;
+    if (t == _i6.ActiveAccountException) {
+      return _i6.ActiveAccountException.fromJson(data) as T;
     }
-    if (t == _i7.LoginExceptionType) {
-      return _i7.LoginExceptionType.fromJson(data) as T;
+    if (t == _i7.ActiveAccountExceptionType) {
+      return _i7.ActiveAccountExceptionType.fromJson(data) as T;
     }
-    if (t == _i8.RegisterException) {
-      return _i8.RegisterException.fromJson(data) as T;
+    if (t == _i8.LoginException) {
+      return _i8.LoginException.fromJson(data) as T;
     }
-    if (t == _i9.RegisterExceptionType) {
-      return _i9.RegisterExceptionType.fromJson(data) as T;
+    if (t == _i9.LoginExceptionType) {
+      return _i9.LoginExceptionType.fromJson(data) as T;
     }
-    if (t == _i10.JwtPayload) {
-      return _i10.JwtPayload.fromJson(data) as T;
+    if (t == _i10.RegisterException) {
+      return _i10.RegisterException.fromJson(data) as T;
     }
-    if (t == _i11.LoginResponse) {
-      return _i11.LoginResponse.fromJson(data) as T;
+    if (t == _i11.RegisterExceptionType) {
+      return _i11.RegisterExceptionType.fromJson(data) as T;
     }
-    if (t == _i12.User) {
-      return _i12.User.fromJson(data) as T;
+    if (t == _i12.JwtPayload) {
+      return _i12.JwtPayload.fromJson(data) as T;
+    }
+    if (t == _i13.LoginResponse) {
+      return _i13.LoginResponse.fromJson(data) as T;
+    }
+    if (t == _i14.User) {
+      return _i14.User.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.ActivationCode?>()) {
       return (data != null ? _i4.ActivationCode.fromJson(data) : null) as T;
@@ -82,27 +94,36 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i5.AuthError?>()) {
       return (data != null ? _i5.AuthError.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i6.LoginException?>()) {
-      return (data != null ? _i6.LoginException.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i7.LoginExceptionType?>()) {
-      return (data != null ? _i7.LoginExceptionType.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i8.RegisterException?>()) {
-      return (data != null ? _i8.RegisterException.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i9.RegisterExceptionType?>()) {
-      return (data != null ? _i9.RegisterExceptionType.fromJson(data) : null)
+    if (t == _i1.getType<_i6.ActiveAccountException?>()) {
+      return (data != null ? _i6.ActiveAccountException.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i10.JwtPayload?>()) {
-      return (data != null ? _i10.JwtPayload.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i7.ActiveAccountExceptionType?>()) {
+      return (data != null
+          ? _i7.ActiveAccountExceptionType.fromJson(data)
+          : null) as T;
     }
-    if (t == _i1.getType<_i11.LoginResponse?>()) {
-      return (data != null ? _i11.LoginResponse.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i8.LoginException?>()) {
+      return (data != null ? _i8.LoginException.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i12.User?>()) {
-      return (data != null ? _i12.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i9.LoginExceptionType?>()) {
+      return (data != null ? _i9.LoginExceptionType.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i10.RegisterException?>()) {
+      return (data != null ? _i10.RegisterException.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i11.RegisterExceptionType?>()) {
+      return (data != null ? _i11.RegisterExceptionType.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i12.JwtPayload?>()) {
+      return (data != null ? _i12.JwtPayload.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i13.LoginResponse?>()) {
+      return (data != null ? _i13.LoginResponse.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i14.User?>()) {
+      return (data != null ? _i14.User.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<Map<String, String>?>()) {
       return (data != null
@@ -136,25 +157,31 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i5.AuthError) {
       return 'AuthError';
     }
-    if (data is _i6.LoginException) {
+    if (data is _i6.ActiveAccountException) {
+      return 'ActiveAccountException';
+    }
+    if (data is _i7.ActiveAccountExceptionType) {
+      return 'ActiveAccountExceptionType';
+    }
+    if (data is _i8.LoginException) {
       return 'LoginException';
     }
-    if (data is _i7.LoginExceptionType) {
+    if (data is _i9.LoginExceptionType) {
       return 'LoginExceptionType';
     }
-    if (data is _i8.RegisterException) {
+    if (data is _i10.RegisterException) {
       return 'RegisterException';
     }
-    if (data is _i9.RegisterExceptionType) {
+    if (data is _i11.RegisterExceptionType) {
       return 'RegisterExceptionType';
     }
-    if (data is _i10.JwtPayload) {
+    if (data is _i12.JwtPayload) {
       return 'JwtPayload';
     }
-    if (data is _i11.LoginResponse) {
+    if (data is _i13.LoginResponse) {
       return 'LoginResponse';
     }
-    if (data is _i12.User) {
+    if (data is _i14.User) {
       return 'User';
     }
     return super.getClassNameForObject(data);
@@ -172,26 +199,32 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'AuthError') {
       return deserialize<_i5.AuthError>(data['data']);
     }
+    if (data['className'] == 'ActiveAccountException') {
+      return deserialize<_i6.ActiveAccountException>(data['data']);
+    }
+    if (data['className'] == 'ActiveAccountExceptionType') {
+      return deserialize<_i7.ActiveAccountExceptionType>(data['data']);
+    }
     if (data['className'] == 'LoginException') {
-      return deserialize<_i6.LoginException>(data['data']);
+      return deserialize<_i8.LoginException>(data['data']);
     }
     if (data['className'] == 'LoginExceptionType') {
-      return deserialize<_i7.LoginExceptionType>(data['data']);
+      return deserialize<_i9.LoginExceptionType>(data['data']);
     }
     if (data['className'] == 'RegisterException') {
-      return deserialize<_i8.RegisterException>(data['data']);
+      return deserialize<_i10.RegisterException>(data['data']);
     }
     if (data['className'] == 'RegisterExceptionType') {
-      return deserialize<_i9.RegisterExceptionType>(data['data']);
+      return deserialize<_i11.RegisterExceptionType>(data['data']);
     }
     if (data['className'] == 'JwtPayload') {
-      return deserialize<_i10.JwtPayload>(data['data']);
+      return deserialize<_i12.JwtPayload>(data['data']);
     }
     if (data['className'] == 'LoginResponse') {
-      return deserialize<_i11.LoginResponse>(data['data']);
+      return deserialize<_i13.LoginResponse>(data['data']);
     }
     if (data['className'] == 'User') {
-      return deserialize<_i12.User>(data['data']);
+      return deserialize<_i14.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

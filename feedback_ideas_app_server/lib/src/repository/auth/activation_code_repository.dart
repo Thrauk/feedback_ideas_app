@@ -20,6 +20,16 @@ class ActivationCodeRepository {
     return code;
   }
 
+  ActivationCode? getActivationCodeByCode(String activationCode) {
+    final activationCodeQuery = SqliteService().queryRowByConditions(
+      tableName: DatabaseConstants.activationCodeTable,
+      conditions: {
+        'activationCode': activationCode,
+      },
+    );
+    return activationCodeQuery != null ? ActivationCode.fromJson(activationCodeQuery) : null;
+  }
+
   void _storeActivationCode({
     required String userUuid,
     required String code,
@@ -29,7 +39,6 @@ class ActivationCodeRepository {
       userUuid: userUuid,
       activationCode: code,
       expiryDate: expiryDate,
-      isUsed: false,
     );
     SqliteService().insertIntoTable(
       table: DatabaseConstants.activationCodeTable,

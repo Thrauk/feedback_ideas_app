@@ -6,5 +6,5 @@ fields:
   password: String
   firstName: String
   lastName: String
-  isActivated: bool
+  isActivated: int
   

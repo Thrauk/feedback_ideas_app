@@ -1,0 +1,4 @@
+exception: ActiveAccountException
+fields:
+  message: String,
+  type: ActiveAccountExceptionType

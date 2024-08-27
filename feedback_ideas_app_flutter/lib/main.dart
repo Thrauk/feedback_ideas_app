@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ShadApp.materialRouter(
-      title: 'N00k Control',
+      title: 'Feedback App',
       darkTheme: ShadThemeData(
         brightness: Brightness.dark,
         colorScheme: ShadColorScheme.fromName('orange', brightness: Brightness.dark),

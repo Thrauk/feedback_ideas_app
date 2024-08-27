@@ -49,6 +49,8 @@ class SqliteService {
     );
   }
 
+  /// Inserts a row into a table. If [returnValue] is set to true, the inserted Row is going to be returned.
+  /// Todo(bosmang): Verify if the data has a good format.
   Row? insertIntoTable({
     required String table,
     required Map<String, dynamic> data,
@@ -76,6 +78,22 @@ class SqliteService {
     return null;
   }
 
+  void updateTableValue({
+    required String table,
+    required Map<String, dynamic> updateValues,
+    required Map<String, dynamic> conditions,
+  }) {
+    final setStatement = updateValues.entries.map((entry) => "${entry.key}='${entry.value}'").join(',');
+    final conditionsStatement = conditions.entries.map((entry) => "${entry.key}='${entry.value}'").join(' AND ');
+    final String statementString = '''
+      UPDATE $table SET $setStatement WHERE $conditionsStatement
+    ''';
+    final statement = _db.prepare(statementString);
+    statement.execute();
+    statement.dispose();
+  }
+
+  /// Check if there are rows that meet exactly one condition
   bool checkIfValueExists({
     required String tableName,
     required String columnName,
@@ -85,6 +103,7 @@ class SqliteService {
     return result.isNotEmpty;
   }
 
+  /// Check if there are any rows that meet multiple conditions.
   bool checkIfMultipleValuesExists({
     required String tableName,
     required Map<String, dynamic> conditions,
@@ -94,6 +113,7 @@ class SqliteService {
     return result.isNotEmpty;
   }
 
+  /// Get a ROW from the DB based on one or multiple conditions.
   Row? queryRowByConditions({
     required String tableName,
     required Map<String, dynamic> conditions,
@@ -103,6 +123,7 @@ class SqliteService {
     return result.firstOrNull;
   }
 
+  /// Get a specific value based on a single condition. TODO(bosmang): Should depracate.
   dynamic queryValueByCondition({
     required String tableName,
     required String targetColumn,
@@ -113,6 +134,7 @@ class SqliteService {
     return result.firstOrNull?[targetColumn];
   }
 
+  /// Get multiple values by one or more conditions. This values should be casted, as they come with the dynamic type.
   dynamic queryMultipleValuesByCondition({
     required String tableName,
     required List<String> targetColumns,
@@ -125,6 +147,7 @@ class SqliteService {
     return {for (var column in targetColumns) column: queryResult?[column]};
   }
 
+  /// Execute a specific query outside the sqlite service. Might not use at all?
   ResultSet queryDatabase(String query) {
     final ResultSet queryResult = _db.select(query);
     return queryResult;

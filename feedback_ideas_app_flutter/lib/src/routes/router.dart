@@ -1,4 +1,7 @@
+import 'package:feedback_ideas_app_flutter/main.dart';
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/activation_screen.dart';
+import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/login_screen.dart';
+import 'package:feedback_ideas_app_flutter/src/features/feed/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,11 +19,11 @@ final GoRouter mainRouter = GoRouter(
       path: '/',
       redirect: (context, state) => RegisterScreen.route,
     ),
-    // GoRoute(
-    //   path: LoginScreen.route,
-    //   name: 'Login',
-    //   builder: (context, state) => const LoginScreen(),
-    // ),
+    GoRoute(
+      path: LoginScreen.route,
+      name: 'Login',
+      builder: (context, state) => LoginScreen.builder(context, state),
+    ),
     GoRoute(
       path: RegisterScreen.route,
       builder: (context, state) => RegisterScreen.builder(context, state),
@@ -29,19 +32,25 @@ final GoRouter mainRouter = GoRouter(
       path: ActivationScreen.route,
       builder: (context, state) => ActivationScreen.builder(context, state),
     ),
+    GoRoute(
+      path: MainScreen.route,
+      pageBuilder: (context, state) => NoTransitionPage(child: MainScreen.builder(context, state)),
+    ),
   ],
   redirect: (context, state) async {
-    // final bool loggedIn = (await serverpodClient.authenticationKeyManager?.get()) != null;
-    // final bool onAuthPage = state.matchedLocation == LoginScreen.route || state.matchedLocation == RegisterScreen.route;
-    // if (!loggedIn) {
-    //   if (onAuthPage) {
-    //     return null;
-    //   }
-    //   return LoginScreen.route;
-    // }
-    // if (loggedIn && onAuthPage) {
-    //   return MainScreen.route;
-    // }
-    // return null;
+    final bool loggedIn = (await authManager.get()) != null;
+    final bool onAuthPage = state.matchedLocation == LoginScreen.route ||
+        state.matchedLocation == RegisterScreen.route ||
+        state.matchedLocation == ActivationScreen.route;
+    if (!loggedIn) {
+      if (onAuthPage) {
+        return null;
+      }
+      return RegisterScreen.route;
+    }
+    if (loggedIn && onAuthPage) {
+      return MainScreen.route;
+    }
+    return null;
   },
 );

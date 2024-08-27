@@ -1,5 +1,6 @@
 import 'package:feedback_ideas_app_server/src/constants/database_constants.dart';
 import 'package:feedback_ideas_app_server/src/generated/protocol.dart';
+import 'package:feedback_ideas_app_server/src/repository/auth/activation_code_repository.dart';
 import 'package:feedback_ideas_app_server/src/services/sqlite_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -36,7 +37,7 @@ class UserRepository {
       password: password,
       firstName: firstName,
       lastName: lastName,
-      isActivated: false,
+      isActivated: 0,
     );
 
     final newUserData = newUser.toJson();
@@ -48,6 +49,9 @@ class UserRepository {
       returnValue: true,
     );
 
+    // final processedResult = Map<String, dynamic>.from(result!);
+    // processedResult['isActivated'] = processedResult['isActivated'] == 1;
+
     try {
       return User.fromJson(result!);
     } catch (e) {
@@ -56,11 +60,51 @@ class UserRepository {
     }
   }
 
+  bool activateUserByCode(String activationCode) {
+    final activationCodeData = ActivationCodeRepository().getActivationCodeByCode(activationCode);
+    if (activationCodeData == null) {
+      return false;
+    }
+
+    /// Throw some errors?
+    if (activationCodeData.expiryDate.isBefore(DateTime.now())) {
+      return false;
+    }
+
+    /// TODO(Bosmang): throw error if code is not found
+    final user = getUserByUuid(activationCodeData.userUuid);
+    if (user.isActivated == true) {
+      return false;
+    }
+
+    _sqliteService.updateTableValue(
+      table: DatabaseConstants.userTable,
+      updateValues: {
+        'isActivated': true,
+      },
+      conditions: {
+        'uuid': user.uuid,
+      },
+    );
+    return true;
+  }
+
   User getUserByEmail(String email) {
     final queryResult = SqliteService().queryRowByConditions(
       tableName: DatabaseConstants.userTable,
       conditions: {
         _emailColumnName: email,
+      },
+    );
+    // TODO(bosmang): adjust errors for null safety
+    return User.fromJson(queryResult!);
+  }
+
+  User getUserByUuid(String uuid) {
+    final queryResult = SqliteService().queryRowByConditions(
+      tableName: DatabaseConstants.userTable,
+      conditions: {
+        'uuid': uuid,
       },
     );
     // TODO(bosmang): adjust errors for null safety

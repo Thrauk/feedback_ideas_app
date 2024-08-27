@@ -16,25 +16,11 @@ import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i4;
 import 'protocol.dart' as _i5;
 
 /// {@category Endpoint}
-class EndpointExample extends _i1.EndpointRef {
-  EndpointExample(_i1.EndpointCaller caller) : super(caller);
+class EndpointUser extends _i1.EndpointRef {
+  EndpointUser(_i1.EndpointCaller caller) : super(caller);
 
   @override
-  String get name => 'example';
-
-  _i2.Future<String> hello(String name) => caller.callServerEndpoint<String>(
-        'example',
-        'hello',
-        {'name': name},
-      );
-}
-
-/// {@category Endpoint}
-class EndpointUserEndpoit extends _i1.EndpointRef {
-  EndpointUserEndpoit(_i1.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'userEndpoit';
+  String get name => 'user';
 
   _i2.Future<bool> register({
     required String email,
@@ -43,7 +29,7 @@ class EndpointUserEndpoit extends _i1.EndpointRef {
     required String lastName,
   }) =>
       caller.callServerEndpoint<bool>(
-        'userEndpoit',
+        'user',
         'register',
         {
           'email': email,
@@ -58,12 +44,19 @@ class EndpointUserEndpoit extends _i1.EndpointRef {
     required String password,
   }) =>
       caller.callServerEndpoint<_i3.LoginResponse>(
-        'userEndpoit',
+        'user',
         'login',
         {
           'email': email,
           'password': password,
         },
+      );
+
+  _i2.Future<bool> activateAccount({required String activationCode}) =>
+      caller.callServerEndpoint<bool>(
+        'user',
+        'activateAccount',
+        {'activationCode': activationCode},
       );
 }
 
@@ -98,22 +91,16 @@ class Client extends _i1.ServerpodClient {
           onFailedCall: onFailedCall,
           onSucceededCall: onSucceededCall,
         ) {
-    example = EndpointExample(this);
-    userEndpoit = EndpointUserEndpoit(this);
+    user = EndpointUser(this);
     modules = _Modules(this);
   }
 
-  late final EndpointExample example;
-
-  late final EndpointUserEndpoit userEndpoit;
+  late final EndpointUser user;
 
   late final _Modules modules;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {
-        'example': example,
-        'userEndpoit': userEndpoit,
-      };
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {'user': user};
 
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup =>

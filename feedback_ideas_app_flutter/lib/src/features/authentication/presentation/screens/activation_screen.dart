@@ -1,4 +1,5 @@
 import 'package:feedback_ideas_app_flutter/src/core/utils/route_query_parameters.dart';
+import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/activation_page_widget.dart';
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/register_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -53,7 +54,9 @@ class ActivationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print(queryParameters);
     return Scaffold(
-      body: Container(),
+      body: ActivationPageWidget(
+        queryParameters: queryParameters,
+      ),
     );
   }
 }

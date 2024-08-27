@@ -15,14 +15,12 @@ abstract class ActivationCode implements _i1.SerializableModel {
     required this.userUuid,
     required this.activationCode,
     required this.expiryDate,
-    required this.isUsed,
   });
 
   factory ActivationCode({
     required String userUuid,
     required String activationCode,
     required DateTime expiryDate,
-    required bool isUsed,
   }) = _ActivationCodeImpl;
 
   factory ActivationCode.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -31,7 +29,6 @@ abstract class ActivationCode implements _i1.SerializableModel {
       activationCode: jsonSerialization['activationCode'] as String,
       expiryDate:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['expiryDate']),
-      isUsed: jsonSerialization['isUsed'] as bool,
     );
   }
 
@@ -41,13 +38,10 @@ abstract class ActivationCode implements _i1.SerializableModel {
 
   DateTime expiryDate;
 
-  bool isUsed;
-
   ActivationCode copyWith({
     String? userUuid,
     String? activationCode,
     DateTime? expiryDate,
-    bool? isUsed,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -55,7 +49,6 @@ abstract class ActivationCode implements _i1.SerializableModel {
       'userUuid': userUuid,
       'activationCode': activationCode,
       'expiryDate': expiryDate.toJson(),
-      'isUsed': isUsed,
     };
   }
 
@@ -70,12 +63,10 @@ class _ActivationCodeImpl extends ActivationCode {
     required String userUuid,
     required String activationCode,
     required DateTime expiryDate,
-    required bool isUsed,
   }) : super._(
           userUuid: userUuid,
           activationCode: activationCode,
           expiryDate: expiryDate,
-          isUsed: isUsed,
         );
 
   @override
@@ -83,13 +74,11 @@ class _ActivationCodeImpl extends ActivationCode {
     String? userUuid,
     String? activationCode,
     DateTime? expiryDate,
-    bool? isUsed,
   }) {
     return ActivationCode(
       userUuid: userUuid ?? this.userUuid,
       activationCode: activationCode ?? this.activationCode,
       expiryDate: expiryDate ?? this.expiryDate,
-      isUsed: isUsed ?? this.isUsed,
     );
   }
 }

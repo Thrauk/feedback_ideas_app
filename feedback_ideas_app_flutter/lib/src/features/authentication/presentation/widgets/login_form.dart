@@ -6,26 +6,22 @@ import 'package:feedback_ideas_app_client/feedback_ideas_app_client.dart';
 import 'package:feedback_ideas_app_flutter/main.dart';
 import 'package:flutter/material.dart';
 
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
 
   @override
-  State<RegisterForm> createState() => _RegisterFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _LoginFormState extends State<LoginForm> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
 
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
   }
 
   @override
@@ -33,8 +29,6 @@ class _RegisterFormState extends State<RegisterForm> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _firstNameController.dispose();
-    _lastNameController.dispose();
   }
 
   String _encrypt256(String textPassword) {
@@ -58,18 +52,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 controller: _emailController,
               ),
               const Text(
-                'First name',
-              ),
-              TextFormField(
-                controller: _firstNameController,
-              ),
-              const Text(
-                'Last Name',
-              ),
-              TextFormField(
-                controller: _lastNameController,
-              ),
-              const Text(
                 'Password',
               ),
               TextFormField(
@@ -77,14 +59,17 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await serverpodClient.user.register(
-                    email: _emailController.text,
-                    password: _encrypt256(_passwordController.text),
-                    firstName: _firstNameController.text,
-                    lastName: _lastNameController.text,
-                  );
+                  try {
+                    final LoginResponse response = await serverpodClient.user.login(
+                      email: _emailController.text,
+                      password: _encrypt256(_passwordController.text),
+                    );
+                    authManager.put(response.token);
+                  } catch (e) {
+                    print(e);
+                  }
                 },
-                child: const Text('Register'),
+                child: const Text('Login'),
               ),
             ],
           ),
