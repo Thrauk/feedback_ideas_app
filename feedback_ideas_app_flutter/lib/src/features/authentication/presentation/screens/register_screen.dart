@@ -1,4 +1,4 @@
-import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/register_form.dart';
+import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/register/register_form.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 

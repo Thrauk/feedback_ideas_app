@@ -19,6 +19,7 @@ dependencies:
   go_router: ^14.2.1
   crypto: ^3.0.3
   url_strategy: ^0.2.0
+  email_validator: ^3.0.0
   feedback_ideas_app_client:
     path: ../feedback_ideas_app_client
 

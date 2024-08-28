@@ -1,6 +1,6 @@
 import 'package:feedback_ideas_app_flutter/src/core/utils/route_query_parameters.dart';
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/activation_page_widget.dart';
-import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/register_form.dart';
+import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/widgets/register/register_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';

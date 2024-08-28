@@ -5,29 +5,33 @@ import 'package:crypto/crypto.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:feedback_ideas_app_client/feedback_ideas_app_client.dart';
 import 'package:feedback_ideas_app_flutter/main.dart';
-import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/register_screen.dart';
+import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _RegisterFormState extends State<RegisterForm> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  final formKey = GlobalKey<ShadFormState>();
-  bool _loginError = false;
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
+  bool _emailAlreadyExistsError = false;
   bool _displayActivationMessage = false;
+  final formKey = GlobalKey<ShadFormState>();
 
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
   }
 
   @override
@@ -35,6 +39,8 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
   }
 
   String _encrypt256(String textPassword) {
@@ -52,10 +58,12 @@ class _LoginFormState extends State<LoginForm> {
           child: ShadForm(
             key: formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ShadInputFormField(
                   label: const Text('Email'),
+                  // placeholder: const Text('Email'),
                   controller: _emailController,
                   validator: (v) {
                     if (!EmailValidator.validate(v) || v.length < 3) {
@@ -66,9 +74,37 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 const SizedBox(height: 4),
                 ShadInputFormField(
+                  label: const Text('First name'),
+                  controller: _firstNameController,
+                  validator: (v) {
+                    if (v.isEmpty) {
+                      return 'First Name field cannot be empty!.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 4),
+                ShadInputFormField(
+                  label: const Text('Last Name'),
+                  controller: _lastNameController,
+                  validator: (v) {
+                    if (v.isEmpty) {
+                      return 'Last Name field cannot be empty!.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 4),
+                ShadInputFormField(
                   obscureText: true,
                   label: const Text('Password'),
                   controller: _passwordController,
+                  validator: (v) {
+                    if (v.length < 6) {
+                      return 'Password must be at least 6 characters!.';
+                    }
+                    return null;
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.all(16.0),
@@ -76,10 +112,10 @@ class _LoginFormState extends State<LoginForm> {
                     height: 4,
                   ),
                 ),
-                if (_loginError)
+                if (_emailAlreadyExistsError)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Email or password is incorrect!'),
+                    child: Text('An account with this email address already exists!'),
                   ),
                 if (_displayActivationMessage)
                   Padding(
@@ -95,35 +131,31 @@ class _LoginFormState extends State<LoginForm> {
                   onPressed: () async {
                     if (formKey.currentState!.saveAndValidate()) {
                       try {
-                        final LoginResponse response = await serverpodClient.user.login(
+                        final res = await serverpodClient.user.register(
                           email: _emailController.text,
                           password: _encrypt256(_passwordController.text),
+                          firstName: _firstNameController.text,
+                          lastName: _lastNameController.text,
                         );
-                        authManager.put(response.token);
-                      } on LoginException catch (e) {
-                        if (e.type == LoginExceptionType.inactiveAccount) {
+                        if (res) {
                           setState(() {
                             _displayActivationMessage = true;
-                          });
-                        } else {
-                          ShadToaster.of(context).show(
-                            const ShadToast(
-                              description: Text('Email or password is incorrect!'),
-                            ),
-                          );
-                          setState(() {
-                            _loginError = true;
+                            _emailAlreadyExistsError = false;
                           });
                         }
+                      } on RegisterException catch (e) {
+                        setState(() {
+                          _emailAlreadyExistsError = true;
+                        });
                       }
                     }
                   },
-                  child: const Text('Login'),
+                  child: const Text('Register'),
                 ),
                 const SizedBox(height: 4),
                 ShadButton.link(
-                  child: const Text("Don't have an account? Register!"),
-                  onPressed: () => RegisterScreen.go(context),
+                  child: const Text('Already have an account? Log in.'),
+                  onPressed: () => LoginScreen.go(context),
                 ),
               ],
             ),

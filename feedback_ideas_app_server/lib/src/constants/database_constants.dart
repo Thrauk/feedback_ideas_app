@@ -10,19 +10,18 @@ class DatabaseConstants {
       password TEXT NOT NULL,
       firstName TEXT NOT NULL,
       lastName TEXT NOT NULL,
-      isActivated BOOLEAN NOT NULL
+      isActivated INTEGER NOT NULL DEFAULT 0
     );
   ''';
 
-    static const String createActivationCodeTableQuery = '''
+  static const String createActivationCodeTableQuery = '''
       CREATE TABLE $activationCodeTable (
         id INTEGER NOT NULL PRIMARY KEY,
         userUuid TEXT NOT NULL,
         activationCode TEXT NOT NULL,
         expiryDate DATETIME NOT NULL,
-        isUsed BOOLEAN NOT NULL DEFAULT 0,
+        isUsed INTEGER NOT NULL DEFAULT 0,
         FOREIGN KEY (userUuid) REFERENCES $userTable(uuid)
       );
   ''';
-
 }

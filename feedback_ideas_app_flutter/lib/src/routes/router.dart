@@ -17,24 +17,26 @@ final GoRouter mainRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      redirect: (context, state) => RegisterScreen.route,
+      redirect: (context, state) => LoginScreen.route,
     ),
     GoRoute(
       path: LoginScreen.route,
       name: 'Login',
-      builder: (context, state) => LoginScreen.builder(context, state),
+      pageBuilder: (context, state) => NoTransitionPage(child: LoginScreen.builder(context, state)),
     ),
     GoRoute(
       path: RegisterScreen.route,
-      builder: (context, state) => RegisterScreen.builder(context, state),
+      pageBuilder: (context, state) => NoTransitionPage(child: RegisterScreen.builder(context, state)),
     ),
     GoRoute(
       path: ActivationScreen.route,
-      builder: (context, state) => ActivationScreen.builder(context, state),
+      pageBuilder: (context, state) => NoTransitionPage(child: ActivationScreen.builder(context, state)),
     ),
     GoRoute(
       path: MainScreen.route,
-      pageBuilder: (context, state) => NoTransitionPage(child: MainScreen.builder(context, state)),
+      pageBuilder: (context, state) => NoTransitionPage(
+        child: MainScreen.builder(context, state),
+      ),
     ),
   ],
   redirect: (context, state) async {

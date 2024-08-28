@@ -80,7 +80,7 @@ class UserRepository {
     _sqliteService.updateTableValue(
       table: DatabaseConstants.userTable,
       updateValues: {
-        'isActivated': true,
+        'isActivated': 1,
       },
       conditions: {
         'uuid': user.uuid,

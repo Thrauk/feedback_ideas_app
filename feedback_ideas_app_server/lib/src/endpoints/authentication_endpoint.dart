@@ -72,6 +72,7 @@ class UserEndpoint extends Endpoint {
     return LoginResponse(token: token);
   }
 
+  /// TODO: invalidate the code after the usage
   Future<bool> activateAccount(Session session, {required String activationCode}) async {
     final activationFeedback = UserRepository().activateUserByCode(activationCode);
     if (!activationFeedback) {

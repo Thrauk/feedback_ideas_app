@@ -17,7 +17,7 @@ var serverpodClient = Client(
 void main() {
   setPathUrlStrategy();
   GoRouter.optionURLReflectsImperativeAPIs = true;
-    authManager.addListener(
+  authManager.addListener(
     () {
       print('Something happened!');
       mainRouter.refresh();
@@ -45,10 +45,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Feedback App',
       darkTheme: ShadThemeData(
         brightness: Brightness.dark,
-        colorScheme: ShadColorScheme.fromName('orange', brightness: Brightness.dark),
+        colorScheme: ShadColorScheme.fromName('orange'),
       ),
       routerConfig: mainRouter,
     );
   }
 }
-

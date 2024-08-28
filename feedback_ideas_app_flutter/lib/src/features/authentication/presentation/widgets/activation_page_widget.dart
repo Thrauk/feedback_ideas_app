@@ -1,5 +1,6 @@
 import 'package:feedback_ideas_app_client/feedback_ideas_app_client.dart';
 import 'package:feedback_ideas_app_flutter/main.dart';
+import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -17,6 +18,7 @@ class ActivationPageWidget extends StatefulWidget {
 
 class _ActivationPageWidgetState extends State<ActivationPageWidget> {
   bool isLoading = true;
+  bool isError = false;
   String? activationCode;
 
   @override
@@ -31,6 +33,10 @@ class _ActivationPageWidgetState extends State<ActivationPageWidget> {
             isLoading = false;
           });
         } on ActiveAccountException catch (e) {
+          setState(() {
+            isLoading = false;
+            isError = true;
+          });
           ShadToaster.of(context).show(
             ShadToast(
               title: const Text('Uh oh! Something went wrong'),
@@ -77,13 +83,28 @@ class _ActivationPageWidgetState extends State<ActivationPageWidget> {
         child: CircularProgressIndicator(),
       );
     }
+
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Account activated!'),
+          if (isError)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ShadCard(
+                width: 500,
+                title: Text('Error'),
+                description: Text('Code is invalid or has expired!'),
+              ),
+            )
+          else
+            Text('Account activated!'),
           ShadButton(
+            width: 500,
             child: const Text('Go to login!'),
-            onPressed: () {},
+            onPressed: () {
+              LoginScreen.go(context);
+            },
           ),
         ],
       ),
