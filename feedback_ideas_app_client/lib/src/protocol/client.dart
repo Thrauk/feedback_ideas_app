@@ -52,6 +52,7 @@ class EndpointUser extends _i1.EndpointRef {
         },
       );
 
+  /// TODO: invalidate the code after the usage
   _i2.Future<bool> activateAccount({required String activationCode}) =>
       caller.callServerEndpoint<bool>(
         'user',

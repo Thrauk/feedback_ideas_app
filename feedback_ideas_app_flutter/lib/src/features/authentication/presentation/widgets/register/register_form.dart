@@ -118,9 +118,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: Text('An account with this email address already exists!'),
                   ),
                 if (_displayActivationMessage)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: const ShadCard(
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: ShadCard(
                       width: double.infinity,
                       title: Text('Activation required'),
                       description: Text('An email has been sent to your email address to activate your account.'),

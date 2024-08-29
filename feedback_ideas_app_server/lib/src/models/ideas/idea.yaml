@@ -1,0 +1,10 @@
+class: Idea
+fields:
+  id: int?
+  uuid: String,
+  postedAt: DateTime,
+  title: String,
+  content: String,
+  authorUuid: String,
+  votesNumber: int,
+  commentsNumber: int

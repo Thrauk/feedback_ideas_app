@@ -22,8 +22,11 @@ import 'auth/exceptions/register/register_exception.dart' as _i8;
 import 'auth/exceptions/register/register_exception_type.dart' as _i9;
 import 'auth/jwt_payload.dart' as _i10;
 import 'auth/login_response.dart' as _i11;
-import 'user/user.dart' as _i12;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i13;
+import 'ideas/idea.dart' as _i12;
+import 'ideas/idea_comment.dart' as _i13;
+import 'ideas/idea_vote.dart' as _i14;
+import 'user/user.dart' as _i15;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i16;
 export 'auth/activation_code.dart';
 export 'auth/auth_error.dart';
 export 'auth/exceptions/activate_account/activate_account_exception.dart';
@@ -34,6 +37,9 @@ export 'auth/exceptions/register/register_exception.dart';
 export 'auth/exceptions/register/register_exception_type.dart';
 export 'auth/jwt_payload.dart';
 export 'auth/login_response.dart';
+export 'ideas/idea.dart';
+export 'ideas/idea_comment.dart';
+export 'ideas/idea_vote.dart';
 export 'user/user.dart';
 export 'client.dart';
 
@@ -80,8 +86,17 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i11.LoginResponse) {
       return _i11.LoginResponse.fromJson(data) as T;
     }
-    if (t == _i12.User) {
-      return _i12.User.fromJson(data) as T;
+    if (t == _i12.Idea) {
+      return _i12.Idea.fromJson(data) as T;
+    }
+    if (t == _i13.IdeaComment) {
+      return _i13.IdeaComment.fromJson(data) as T;
+    }
+    if (t == _i14.IdeaVote) {
+      return _i14.IdeaVote.fromJson(data) as T;
+    }
+    if (t == _i15.User) {
+      return _i15.User.fromJson(data) as T;
     }
     if (t == _i1.getType<_i2.ActivationCode?>()) {
       return (data != null ? _i2.ActivationCode.fromJson(data) : null) as T;
@@ -117,8 +132,17 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i11.LoginResponse?>()) {
       return (data != null ? _i11.LoginResponse.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i12.User?>()) {
-      return (data != null ? _i12.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i12.Idea?>()) {
+      return (data != null ? _i12.Idea.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i13.IdeaComment?>()) {
+      return (data != null ? _i13.IdeaComment.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i14.IdeaVote?>()) {
+      return (data != null ? _i14.IdeaVote.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i15.User?>()) {
+      return (data != null ? _i15.User.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<Map<String, String>?>()) {
       return (data != null
@@ -131,7 +155,7 @@ class Protocol extends _i1.SerializationManager {
           as dynamic;
     }
     try {
-      return _i13.Protocol().deserialize<T>(data, t);
+      return _i16.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -139,7 +163,7 @@ class Protocol extends _i1.SerializationManager {
   @override
   String? getClassNameForObject(Object data) {
     String? className;
-    className = _i13.Protocol().getClassNameForObject(data);
+    className = _i16.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
@@ -173,7 +197,16 @@ class Protocol extends _i1.SerializationManager {
     if (data is _i11.LoginResponse) {
       return 'LoginResponse';
     }
-    if (data is _i12.User) {
+    if (data is _i12.Idea) {
+      return 'Idea';
+    }
+    if (data is _i13.IdeaComment) {
+      return 'IdeaComment';
+    }
+    if (data is _i14.IdeaVote) {
+      return 'IdeaVote';
+    }
+    if (data is _i15.User) {
       return 'User';
     }
     return super.getClassNameForObject(data);
@@ -183,7 +216,7 @@ class Protocol extends _i1.SerializationManager {
   dynamic deserializeByClassName(Map<String, dynamic> data) {
     if (data['className'].startsWith('serverpod_auth.')) {
       data['className'] = data['className'].substring(15);
-      return _i13.Protocol().deserializeByClassName(data);
+      return _i16.Protocol().deserializeByClassName(data);
     }
     if (data['className'] == 'ActivationCode') {
       return deserialize<_i2.ActivationCode>(data['data']);
@@ -215,8 +248,17 @@ class Protocol extends _i1.SerializationManager {
     if (data['className'] == 'LoginResponse') {
       return deserialize<_i11.LoginResponse>(data['data']);
     }
+    if (data['className'] == 'Idea') {
+      return deserialize<_i12.Idea>(data['data']);
+    }
+    if (data['className'] == 'IdeaComment') {
+      return deserialize<_i13.IdeaComment>(data['data']);
+    }
+    if (data['className'] == 'IdeaVote') {
+      return deserialize<_i14.IdeaVote>(data['data']);
+    }
     if (data['className'] == 'User') {
-      return deserialize<_i12.User>(data['data']);
+      return deserialize<_i15.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

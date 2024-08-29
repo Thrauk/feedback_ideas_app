@@ -1,0 +1,8 @@
+class: IdeaComment
+fields:
+  id: int
+  uuid: String,
+  authorUuid: String,
+  ideaUuid: String,
+  postedAt: DateTime,
+  content: String,

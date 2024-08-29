@@ -1,4 +1,6 @@
 import 'package:feedback_ideas_app_flutter/main.dart';
+import 'package:feedback_ideas_app_flutter/src/core/widgets/navbar/desktop_navbar.dart';
+import 'package:feedback_ideas_app_flutter/src/core/widgets/navbar/desktop_navbar_old.dart';
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/activation_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/login_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/feed/main_screen.dart';
@@ -32,11 +34,19 @@ final GoRouter mainRouter = GoRouter(
       path: ActivationScreen.route,
       pageBuilder: (context, state) => NoTransitionPage(child: ActivationScreen.builder(context, state)),
     ),
-    GoRoute(
-      path: MainScreen.route,
-      pageBuilder: (context, state) => NoTransitionPage(
-        child: MainScreen.builder(context, state),
-      ),
+    ShellRoute(
+      navigatorKey: _shellNavbarKey,
+      builder: (context, state, child) {
+        return DesktopNavbar(state: state, child: child);
+      },
+      routes: [
+        GoRoute(
+          path: MainScreen.route,
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: MainScreen.builder(context, state),
+          ),
+        ),
+      ],
     ),
   ],
   redirect: (context, state) async {

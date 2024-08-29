@@ -1,0 +1,6 @@
+class: IdeaVote
+fields:
+  id: int
+  userUuid: String,
+  ideaUuid: String,
+  votedAt: DateTime
