@@ -4,6 +4,7 @@ import 'package:feedback_ideas_app_flutter/src/core/widgets/navbar/desktop_navba
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/activation_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/login_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/feed/main_screen.dart';
+import 'package:feedback_ideas_app_flutter/src/features/ideas/presentation/screens/my_ideas_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,6 +45,12 @@ final GoRouter mainRouter = GoRouter(
           path: MainScreen.route,
           pageBuilder: (context, state) => NoTransitionPage(
             child: MainScreen.builder(context, state),
+          ),
+        ),
+        GoRoute(
+          path: MyIdeasScreen.route,
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: MyIdeasScreen.builder(context, state),
           ),
         ),
       ],

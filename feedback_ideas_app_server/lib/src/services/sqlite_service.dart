@@ -1,6 +1,23 @@
 import 'package:feedback_ideas_app_server/src/constants/database_constants.dart';
 import 'package:sqlite3/sqlite3.dart';
 
+enum SqlOrderType {
+  ascending('ASC'),
+  descending('DESC');
+
+  const SqlOrderType(this.value);
+  final String value;
+}
+
+class SqlOrderBy {
+  const SqlOrderBy({
+    required this.key,
+    required this.orderType,
+  });
+  final String key;
+  final SqlOrderType orderType;
+}
+
 class SqliteService {
   static late final SqliteService _singleton; // = SqliteService._internal();
   final Database _db;
@@ -16,11 +33,12 @@ class SqliteService {
       databasePath,
     );
 
-    if (!_checkIfTableExists(DatabaseConstants.userTable, database)) {
-      _createUsersTable(database);
-    }
-    if (!_checkIfTableExists(DatabaseConstants.activationCodeTable, database)) {
-      _createActivationCodesTable(database);
+    for (String table in DatabaseConstants.creationQueries.keys) {
+      if (!_checkIfTableExists(table, database)) {
+        database.execute(
+          DatabaseConstants.creationQueries[table]!,
+        );
+      }
     }
 
     _singleton = SqliteService._internal(
@@ -37,20 +55,9 @@ class SqliteService {
     return result.length == 1;
   }
 
-  static void _createUsersTable(Database database) {
-    database.execute(
-      DatabaseConstants.createUserTableQuery,
-    );
-  }
-
-  static void _createActivationCodesTable(Database database) {
-    database.execute(
-      DatabaseConstants.createActivationCodeTableQuery,
-    );
-  }
-
   /// Inserts a row into a table. If [returnValue] is set to true, the inserted Row is going to be returned.
   /// Todo(bosmang): Verify if the data has a good format.
+  /// Todo(bosmang): Only sqlite_service should know about Row data type. Modify in other places.
   Row? insertIntoTable({
     required String table,
     required Map<String, dynamic> data,
@@ -135,7 +142,7 @@ class SqliteService {
   }
 
   /// Get multiple values by one or more conditions. This values should be casted, as they come with the dynamic type.
-  dynamic queryMultipleValuesByCondition({
+  Map<String, dynamic> queryMultipleValuesByCondition({
     required String tableName,
     required List<String> targetColumns,
     required Map<String, dynamic> conditions,
@@ -145,6 +152,27 @@ class SqliteService {
     final queryResultAll = queryDatabase("SELECT $targetColumnsString FROM $tableName WHERE ($conditionsString)");
     final queryResult = queryResultAll.firstOrNull;
     return {for (var column in targetColumns) column: queryResult?[column]};
+  }
+
+  List<Map<String, dynamic>> selectAll({
+    required String tableName,
+    Map<String, dynamic> conditions = const <String, dynamic>{},
+    SqlOrderBy? orderBy,
+  }) {
+    final String conditionsString = conditions.entries.map((entry) => "${entry.key}='${entry.value}'").join(' AND ');
+    final queryResultAll = queryDatabase(
+      '''SELECT * FROM $tableName 
+        ${conditions.isNotEmpty ? 'WHERE($conditionsString) ' : ''}
+        ${orderBy != null ? 'ORDER BY ${orderBy.key} ${orderBy.orderType.value}' : ''}
+      ''',
+    );
+    final queryResult = queryResultAll
+        .toList()
+        .map(
+          (row) => Map<String, dynamic>.from(row),
+        )
+        .toList();
+    return queryResult;
   }
 
   /// Execute a specific query outside the sqlite service. Might not use at all?

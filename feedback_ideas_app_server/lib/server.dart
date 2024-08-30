@@ -1,6 +1,7 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:feedback_ideas_app_server/src/repository/auth/jwt_repository.dart';
 import 'package:feedback_ideas_app_server/src/services/sqlite_service.dart';
+import 'package:feedback_ideas_app_server/src/utils/authentication_info_exteded.dart';
 import 'package:serverpod/serverpod.dart';
 
 import 'src/generated/protocol.dart';
@@ -22,7 +23,7 @@ void run(List<String> args) async {
       final JwtPayload payload = JwtPayload.fromJson(jwt.payload);
       Set<Scope> userScopes = payload.scopes.map((scope) => Scope(scope)).toSet();
 
-      return AuthenticationInfo(payload.userId, userScopes);
+      return AuthenticationInfoExteded(payload.userId, userScopes, payload.userUuid);
     },
   );
 

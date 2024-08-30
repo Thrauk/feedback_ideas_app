@@ -3,6 +3,12 @@ class DatabaseConstants {
   static const String activationCodeTable = 'activation_codes';
   static const String ideaTable = 'ideas';
 
+  static Map<String, String> creationQueries = {
+    userTable: createUserTableQuery,
+    activationCodeTable: createActivationCodeTableQuery,
+    ideaTable: createIdeasTableQuery,
+  };
+
   static const String createUserTableQuery = '''
     CREATE TABLE $userTable (
       id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -20,7 +26,7 @@ class DatabaseConstants {
         id INTEGER NOT NULL PRIMARY KEY,
         userUuid TEXT NOT NULL,
         activationCode TEXT NOT NULL,
-        expiryDate DATETIME NOT NULL,
+        expiryDate TEXT NOT NULL,
         isUsed INTEGER NOT NULL DEFAULT 0,
         FOREIGN KEY (userUuid) REFERENCES $userTable(uuid)
       );
@@ -30,12 +36,12 @@ class DatabaseConstants {
       CREATE TABLE $ideaTable (
         id INTEGER NOT NULL PRIMARY KEY,
         uuid TEXT NOT NULL UNIQUE,
-        postedAt DATETIME NOT NULL,
+        postedAt TEXT NOT NULL,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
         authorUuid TEXT NOT NULL,
         votesNumber INTEGER DEFAULT 0,
-        commentsNumber INTEGER DEFAULT 0
+        commentsNumber INTEGER DEFAULT 0,
         FOREIGN KEY (authorUuid) REFERENCES $userTable(uuid)
       );
   ''';

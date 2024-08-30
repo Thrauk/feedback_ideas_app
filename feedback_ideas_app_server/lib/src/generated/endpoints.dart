@@ -9,20 +9,67 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../endpoints/authentication_endpoint.dart' as _i2;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
+import '../endpoints/idea_endpoint.dart' as _i2;
+import '../endpoints/user_endpoint.dart' as _i3;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i4;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
   void initializeEndpoints(_i1.Server server) {
     var endpoints = <String, _i1.Endpoint>{
-      'user': _i2.UserEndpoint()
+      'idea': _i2.IdeaEndpoint()
+        ..initialize(
+          server,
+          'idea',
+          null,
+        ),
+      'user': _i3.UserEndpoint()
         ..initialize(
           server,
           'user',
           null,
-        )
+        ),
     };
+    connectors['idea'] = _i1.EndpointConnector(
+      name: 'idea',
+      endpoint: endpoints['idea']!,
+      methodConnectors: {
+        'postIdea': _i1.MethodConnector(
+          name: 'postIdea',
+          params: {
+            'title': _i1.ParameterDescription(
+              name: 'title',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'content': _i1.ParameterDescription(
+              name: 'content',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['idea'] as _i2.IdeaEndpoint).postIdea(
+            session,
+            title: params['title'],
+            content: params['content'],
+          ),
+        ),
+        'getLoggedUserIdeas': _i1.MethodConnector(
+          name: 'getLoggedUserIdeas',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['idea'] as _i2.IdeaEndpoint)
+                  .getLoggedUserIdeas(session),
+        ),
+      },
+    );
     connectors['user'] = _i1.EndpointConnector(
       name: 'user',
       endpoint: endpoints['user']!,
@@ -55,7 +102,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i2.UserEndpoint).register(
+              (endpoints['user'] as _i3.UserEndpoint).register(
             session,
             email: params['email'],
             password: params['password'],
@@ -81,7 +128,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i2.UserEndpoint).login(
+              (endpoints['user'] as _i3.UserEndpoint).login(
             session,
             email: params['email'],
             password: params['password'],
@@ -100,13 +147,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i2.UserEndpoint).activateAccount(
+              (endpoints['user'] as _i3.UserEndpoint).activateAccount(
             session,
             activationCode: params['activationCode'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i3.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i4.Endpoints()..initializeEndpoints(server);
   }
 }

@@ -28,6 +28,8 @@ import 'ideas/idea.dart' as _i14;
 import 'ideas/idea_comment.dart' as _i15;
 import 'ideas/idea_vote.dart' as _i16;
 import 'user/user.dart' as _i17;
+import 'package:feedback_ideas_app_server/src/generated/ideas/idea.dart'
+    as _i18;
 export 'auth/activation_code.dart';
 export 'auth/auth_error.dart';
 export 'auth/exceptions/activate_account/activate_account_exception.dart';
@@ -157,6 +159,10 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i18.Idea>) {
+      return (data as List).map((e) => deserialize<_i18.Idea>(e)).toList()
           as dynamic;
     }
     try {

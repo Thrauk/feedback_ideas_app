@@ -10,10 +10,39 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
+import 'package:feedback_ideas_app_client/src/protocol/ideas/idea.dart' as _i3;
 import 'package:feedback_ideas_app_client/src/protocol/auth/login_response.dart'
-    as _i3;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i4;
-import 'protocol.dart' as _i5;
+    as _i4;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i5;
+import 'protocol.dart' as _i6;
+
+/// {@category Endpoint}
+class EndpointIdea extends _i1.EndpointRef {
+  EndpointIdea(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'idea';
+
+  _i2.Future<bool> postIdea({
+    required String title,
+    required String content,
+  }) =>
+      caller.callServerEndpoint<bool>(
+        'idea',
+        'postIdea',
+        {
+          'title': title,
+          'content': content,
+        },
+      );
+
+  _i2.Future<List<_i3.Idea>> getLoggedUserIdeas() =>
+      caller.callServerEndpoint<List<_i3.Idea>>(
+        'idea',
+        'getLoggedUserIdeas',
+        {},
+      );
+}
 
 /// {@category Endpoint}
 class EndpointUser extends _i1.EndpointRef {
@@ -39,11 +68,11 @@ class EndpointUser extends _i1.EndpointRef {
         },
       );
 
-  _i2.Future<_i3.LoginResponse> login({
+  _i2.Future<_i4.LoginResponse> login({
     required String email,
     required String password,
   }) =>
-      caller.callServerEndpoint<_i3.LoginResponse>(
+      caller.callServerEndpoint<_i4.LoginResponse>(
         'user',
         'login',
         {
@@ -63,10 +92,10 @@ class EndpointUser extends _i1.EndpointRef {
 
 class _Modules {
   _Modules(Client client) {
-    auth = _i4.Caller(client);
+    auth = _i5.Caller(client);
   }
 
-  late final _i4.Caller auth;
+  late final _i5.Caller auth;
 }
 
 class Client extends _i1.ServerpodClient {
@@ -84,7 +113,7 @@ class Client extends _i1.ServerpodClient {
     Function(_i1.MethodCallContext)? onSucceededCall,
   }) : super(
           host,
-          _i5.Protocol(),
+          _i6.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -92,16 +121,22 @@ class Client extends _i1.ServerpodClient {
           onFailedCall: onFailedCall,
           onSucceededCall: onSucceededCall,
         ) {
+    idea = EndpointIdea(this);
     user = EndpointUser(this);
     modules = _Modules(this);
   }
+
+  late final EndpointIdea idea;
 
   late final EndpointUser user;
 
   late final _Modules modules;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {'user': user};
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {
+        'idea': idea,
+        'user': user,
+      };
 
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup =>

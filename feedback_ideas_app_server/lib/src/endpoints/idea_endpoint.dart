@@ -1,0 +1,42 @@
+import 'package:feedback_ideas_app_server/src/generated/protocol.dart';
+import 'package:feedback_ideas_app_server/src/repository/auth/activation_code_repository.dart';
+import 'package:feedback_ideas_app_server/src/repository/auth/jwt_repository.dart';
+import 'package:feedback_ideas_app_server/src/repository/auth/smtp_repository.dart';
+import 'package:feedback_ideas_app_server/src/repository/idea/idea_repository.dart';
+import 'package:feedback_ideas_app_server/src/repository/user/user_repository.dart';
+import 'package:feedback_ideas_app_server/src/utils/authentication_info_exteded.dart';
+import 'package:serverpod/serverpod.dart';
+
+class IdeaEndpoint extends Endpoint {
+  @override
+  bool get requireLogin => true;
+
+  Future<bool> postIdea(
+    Session session, {
+    required String title,
+    required String content,
+  }) async {
+    try {
+      /// If the user is logged, it should not trigger a null error. Test this behaviour! ToDO(bosmang)
+      final authInfo = (await session.authenticated)! as AuthenticationInfoExteded;
+      final currentUserUuid = authInfo.userUuid;
+
+      IdeaRepository().postIdea(
+        authorUuid: currentUserUuid,
+        title: title,
+        content: content,
+      );
+    } catch (e) {
+      print(e);
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<List<Idea>> getLoggedUserIdeas(Session session) async {
+    final authInfo = (await session.authenticated)! as AuthenticationInfoExteded;
+    final currentUserUuid = authInfo.userUuid;
+    return IdeaRepository().getIdeasByAuthorUuid(authorUuid: currentUserUuid);
+  }
+}

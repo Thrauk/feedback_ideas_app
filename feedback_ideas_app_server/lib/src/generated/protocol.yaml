@@ -1,3 +1,6 @@
+idea:
+  - postIdea:
+  - getLoggedUserIdeas:
 user:
   - register:
   - login:

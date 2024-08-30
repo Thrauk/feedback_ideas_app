@@ -26,7 +26,8 @@ import 'ideas/idea.dart' as _i12;
 import 'ideas/idea_comment.dart' as _i13;
 import 'ideas/idea_vote.dart' as _i14;
 import 'user/user.dart' as _i15;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i16;
+import 'package:feedback_ideas_app_client/src/protocol/ideas/idea.dart' as _i16;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i17;
 export 'auth/activation_code.dart';
 export 'auth/auth_error.dart';
 export 'auth/exceptions/activate_account/activate_account_exception.dart';
@@ -154,8 +155,12 @@ class Protocol extends _i1.SerializationManager {
       return (data as List).map((e) => deserialize<String>(e)).toList()
           as dynamic;
     }
+    if (t == List<_i16.Idea>) {
+      return (data as List).map((e) => deserialize<_i16.Idea>(e)).toList()
+          as dynamic;
+    }
     try {
-      return _i16.Protocol().deserialize<T>(data, t);
+      return _i17.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -163,7 +168,7 @@ class Protocol extends _i1.SerializationManager {
   @override
   String? getClassNameForObject(Object data) {
     String? className;
-    className = _i16.Protocol().getClassNameForObject(data);
+    className = _i17.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
@@ -216,7 +221,7 @@ class Protocol extends _i1.SerializationManager {
   dynamic deserializeByClassName(Map<String, dynamic> data) {
     if (data['className'].startsWith('serverpod_auth.')) {
       data['className'] = data['className'].substring(15);
-      return _i16.Protocol().deserializeByClassName(data);
+      return _i17.Protocol().deserializeByClassName(data);
     }
     if (data['className'] == 'ActivationCode') {
       return deserialize<_i2.ActivationCode>(data['data']);
