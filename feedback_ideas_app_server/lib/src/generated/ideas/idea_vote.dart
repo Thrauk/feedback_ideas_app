@@ -14,14 +14,14 @@ import 'package:serverpod_serialization/serverpod_serialization.dart';
 abstract class IdeaVote
     implements _i1.SerializableModel, _i1.ProtocolSerialization {
   IdeaVote._({
-    required this.id,
+    this.id,
     required this.userUuid,
     required this.ideaUuid,
     required this.votedAt,
   });
 
   factory IdeaVote({
-    required int id,
+    int? id,
     required String userUuid,
     required String ideaUuid,
     required DateTime votedAt,
@@ -29,14 +29,14 @@ abstract class IdeaVote
 
   factory IdeaVote.fromJson(Map<String, dynamic> jsonSerialization) {
     return IdeaVote(
-      id: jsonSerialization['id'] as int,
+      id: jsonSerialization['id'] as int?,
       userUuid: jsonSerialization['userUuid'] as String,
       ideaUuid: jsonSerialization['ideaUuid'] as String,
       votedAt: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['votedAt']),
     );
   }
 
-  int id;
+  int? id;
 
   String userUuid;
 
@@ -53,7 +53,7 @@ abstract class IdeaVote
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'userUuid': userUuid,
       'ideaUuid': ideaUuid,
       'votedAt': votedAt.toJson(),
@@ -63,7 +63,7 @@ abstract class IdeaVote
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'userUuid': userUuid,
       'ideaUuid': ideaUuid,
       'votedAt': votedAt.toJson(),
@@ -76,9 +76,11 @@ abstract class IdeaVote
   }
 }
 
+class _Undefined {}
+
 class _IdeaVoteImpl extends IdeaVote {
   _IdeaVoteImpl({
-    required int id,
+    int? id,
     required String userUuid,
     required String ideaUuid,
     required DateTime votedAt,
@@ -91,13 +93,13 @@ class _IdeaVoteImpl extends IdeaVote {
 
   @override
   IdeaVote copyWith({
-    int? id,
+    Object? id = _Undefined,
     String? userUuid,
     String? ideaUuid,
     DateTime? votedAt,
   }) {
     return IdeaVote(
-      id: id ?? this.id,
+      id: id is int? ? id : this.id,
       userUuid: userUuid ?? this.userUuid,
       ideaUuid: ideaUuid ?? this.ideaUuid,
       votedAt: votedAt ?? this.votedAt,

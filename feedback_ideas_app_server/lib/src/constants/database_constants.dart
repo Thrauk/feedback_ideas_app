@@ -2,13 +2,13 @@ class DatabaseConstants {
   static const String userTable = 'users';
   static const String activationCodeTable = 'activation_codes';
   static const String ideaTable = 'ideas';
-  static const String ideaVoteTable = 'idea_vote';
+  static const String ideaVoteTable = 'idea_votes';
 
   static Map<String, String> creationQueries = {
     userTable: createUserTableQuery,
     activationCodeTable: createActivationCodeTableQuery,
     ideaTable: createIdeasTableQuery,
-    ideaVoteTable: ideaVoteTable,
+    ideaVoteTable: createIdeasVoteTableQuery,
   };
 
   static const String createUserTableQuery = '''

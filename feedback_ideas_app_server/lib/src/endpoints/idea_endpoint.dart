@@ -36,6 +36,26 @@ class IdeaEndpoint extends Endpoint {
     return true;
   }
 
+  Future<bool> voteIdea(
+    Session session, {
+    required String ideaUuid,
+  }) async {
+    try {
+      final authInfo = (await session.authenticated)! as AuthenticationInfoExteded;
+      final currentUserUuid = authInfo.userUuid;
+
+      IdeaRepository().voteIdea(
+        userId: currentUserUuid,
+        ideaUuid: ideaUuid,
+      );
+    } catch (e) {
+      print(e);
+      return false;
+    }
+
+    return true;
+  }
+
   Future<List<Idea>> getLoggedUserIdeas(Session session) async {
     final authInfo = (await session.authenticated)! as AuthenticationInfoExteded;
     final currentUserUuid = authInfo.userUuid;
@@ -47,7 +67,10 @@ class IdeaEndpoint extends Endpoint {
     String sortBy = 'postedAt',
     int sortOrder = 1,
   }) async {
+    final authInfo = (await session.authenticated)! as AuthenticationInfoExteded;
+    final currentUserUuid = authInfo.userUuid;
     return IdeaRepository().getIdeas(
+      currentUserUuid: currentUserUuid,
       orderBy: SqlOrderBy(
         key: sortBy,
         orderType: sortOrder == 0 ? SqlOrderType.ascending : SqlOrderType.descending,

@@ -1,4 +1,5 @@
 import 'package:feedback_ideas_app_server/src/constants/database_constants.dart';
+import 'package:feedback_ideas_app_server/src/services/sqlite_query_helper.dart';
 import 'package:feedback_ideas_app_server/src/services/sqlite_utils.dart';
 import 'package:feedback_ideas_app_server/src/test_data/test_data_loader.dart';
 import 'package:sqlite3/sqlite3.dart';
@@ -161,6 +162,7 @@ class SqliteService {
     return queryResult;
   }
 
+  /// Old compatibility. ToDO: Delete afterwards.
   List<Map<String, dynamic>> selectSingleJoin({
     required String tableName,
     required String joinTable,
@@ -193,6 +195,43 @@ class SqliteService {
           (row) => Map<String, dynamic>.from(row),
         )
         .toList();
+    return queryResult;
+  }
+
+  // Main function that handles multiple joins, conditions, fields, and ordering
+  List<Map<String, dynamic>> selectWithJoins({
+    required String tableName,
+    required List<SqlJoin> joins,
+    List<String> tableFields = const [],
+    List<SqlCaseField> caseFields = const [],
+    Map<String, dynamic> conditions = const <String, dynamic>{},
+    SqlOrderBy? orderBy,
+  }) {
+    // Construct the query strings using helper methods
+    final conditionsString = SqliteQueryHelper.buildConditionsString(conditions);
+    final joinStatements = SqliteQueryHelper.buildJoinStatements(joins, tableName);
+    final selectString = SqliteQueryHelper.buildSelectString(
+      tableName,
+      tableFields,
+      joins,
+      caseFields,
+    );
+
+    // Construct the complete SQL query
+    final query = '''
+    SELECT 
+      $selectString
+    FROM 
+      $tableName
+    $joinStatements
+    ${conditions.isNotEmpty ? 'WHERE $conditionsString' : ''}
+    ${orderBy != null ? 'ORDER BY ${orderBy.key} ${orderBy.orderType.value}' : ''}
+  ''';
+
+    // Execute the query and format the result
+    final queryResultAll = queryDatabase(query);
+    final queryResult = queryResultAll.map((row) => Map<String, dynamic>.from(row)).toList();
+
     return queryResult;
   }
 

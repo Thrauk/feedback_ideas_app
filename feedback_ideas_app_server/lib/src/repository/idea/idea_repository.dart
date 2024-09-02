@@ -64,7 +64,7 @@ class IdeaRepository {
     return ideas;
   }
 
-  List<IdeaExtended> getIdeas({
+  List<IdeaExtended> getIdeasOld({
     SqlOrderBy? orderBy,
     String? searchQuery,
   }) {
@@ -92,5 +92,75 @@ class IdeaRepository {
         )
         .toList();
     return ideas;
+  }
+
+  List<IdeaExtended> getIdeas({
+    SqlOrderBy? orderBy,
+    String? searchQuery,
+    required String currentUserUuid,
+  }) {
+    const ideaTable = DatabaseConstants.ideaTable;
+    const userTable = DatabaseConstants.userTable;
+    const ideaVoteTable = DatabaseConstants.ideaVoteTable;
+    final queryResult = _sqliteService.selectWithJoins(
+      tableName: ideaTable,
+      joins: [
+        SqlJoin(
+          joinTable: userTable,
+          joinType: 'INNER',
+          joinConditions: '$ideaTable.authorUuid = $userTable.uuid',
+          joinTableFields: [
+            SqlJoinTableField(fieldName: 'firstName', alias: 'authorFirstName'),
+            SqlJoinTableField(fieldName: 'lastName', alias: 'authorLastName'),
+          ],
+        ),
+        SqlJoin(
+          joinTable: ideaVoteTable,
+          joinType: 'LEFT',
+          joinConditions: "$ideaTable.uuid = $ideaVoteTable.ideaUuid AND $ideaVoteTable.userUuid = '$currentUserUuid'",
+        ),
+      ],
+      caseFields: [
+        SqlCaseField(
+          // Check if the join for the current user has a result
+          caseCondition: '$ideaVoteTable.userUuid IS NOT NULL',
+          trueValue: '1',
+          falseValue: '0',
+          alias: 'votedByCurrentUser',
+        ),
+      ],
+      conditions: {}, // Any additional conditions can be passed here
+      orderBy: SqlOrderBy(
+        key: 'postedAt',
+        orderType: SqlOrderType.descending,
+      ),
+    );
+    ;
+    final List<IdeaExtended> ideas = queryResult
+        .map(
+          (item) => IdeaExtended.fromJson(item),
+        )
+        .toList();
+    return ideas;
+  }
+
+  void voteIdea({
+    required String userId,
+    required String ideaUuid,
+  }) {
+
+    final IdeaVote item = IdeaVote(
+      userUuid: userId,
+      ideaUuid: ideaUuid,
+      votedAt: DateTime.now(),
+    );
+
+    final data = item.toJson();
+    data.remove(_idColumnName);
+
+    _sqliteService.insertIntoTable(
+      table: DatabaseConstants.ideaVoteTable,
+      data: data,
+    );
   }
 }

@@ -19,7 +19,7 @@ class SqlOrderBy {
 class SqlJoin {
   final String joinTable;
   final String joinType; // LEFT, INNER, etc.
-  final Map<String, String> joinConditions; // Conditions to join on
+  final String joinConditions; // Raw SQL join conditions
   final List<SqlJoinTableField> joinTableFields; // Fields to select from the join table
 
   SqlJoin({

@@ -38,6 +38,13 @@ class EndpointIdea extends _i1.EndpointRef {
         },
       );
 
+  _i2.Future<bool> voteIdea({required String ideaUuid}) =>
+      caller.callServerEndpoint<bool>(
+        'idea',
+        'voteIdea',
+        {'ideaUuid': ideaUuid},
+      );
+
   _i2.Future<List<_i3.Idea>> getLoggedUserIdeas() =>
       caller.callServerEndpoint<List<_i3.Idea>>(
         'idea',

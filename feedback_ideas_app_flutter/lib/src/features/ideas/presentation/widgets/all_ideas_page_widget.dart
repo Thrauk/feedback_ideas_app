@@ -69,9 +69,13 @@ class _AllIdeasPageWidgetState extends State<AllIdeasPageWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.thumb_up),
+                                icon: Icon(
+                                  Icons.thumb_up,
+                                  color: idea.votedByCurrentUser == 1 ? Colors.orange : null,
+                                ),
                                 onPressed: () {},
                               ),
+                              Text('Votes ${idea.votesNumber}'),
                             ],
                           ),
                         ),

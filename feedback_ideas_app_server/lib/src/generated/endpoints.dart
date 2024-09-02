@@ -58,6 +58,24 @@ class Endpoints extends _i1.EndpointDispatch {
             content: params['content'],
           ),
         ),
+        'voteIdea': _i1.MethodConnector(
+          name: 'voteIdea',
+          params: {
+            'ideaUuid': _i1.ParameterDescription(
+              name: 'ideaUuid',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['idea'] as _i2.IdeaEndpoint).voteIdea(
+            session,
+            ideaUuid: params['ideaUuid'],
+          ),
+        ),
         'getLoggedUserIdeas': _i1.MethodConnector(
           name: 'getLoggedUserIdeas',
           params: {},
