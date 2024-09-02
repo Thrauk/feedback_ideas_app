@@ -10,7 +10,7 @@ import 'src/generated/endpoints.dart';
 // This is the starting point of your Serverpod server.
 void run(List<String> args) async {
   // Initialize Serverpod and connect it with your generated code.
-  SqliteService.initialize(databasePath: 'database.db');
+  await SqliteService.initialize(databasePath: 'database.db');
   final pod = Serverpod(
     args,
     Protocol(),

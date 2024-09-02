@@ -1,6 +1,7 @@
 import 'package:feedback_ideas_app_flutter/main.dart';
 import 'package:feedback_ideas_app_flutter/src/core/widgets/navbar/desktop_navbar_button.dart';
 import 'package:feedback_ideas_app_flutter/src/features/feed/main_screen.dart';
+import 'package:feedback_ideas_app_flutter/src/features/ideas/presentation/screens/all_ideas_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/ideas/presentation/screens/my_ideas_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +46,9 @@ class DesktopNavbar extends StatelessWidget {
                   children: [
                     ShadButton.link(
                       child: Text('Home/Feed'),
-                      onPressed: () {},
+                      onPressed: () {
+                        AllIdeasScreen.push(context);
+                      },
                     ),
                     ShadButton.link(
                       child: Text('My Ideas'),

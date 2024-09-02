@@ -1,0 +1,18 @@
+[
+    {
+        "uuid" : "95edab30-66cb-11ef-99c8-eb6434a16d60",
+        "email" : "john@test.com",
+        "password" : "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "firstName" : "Johnny",
+        "lastName" : "Smitty",
+        "isActivated" : 1
+    },
+    {
+        "uuid" : "2fa2d0e4-4164-46d2-bab9-1ed1d8dff91c",
+        "email" : "test@test.com",
+        "password" : "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "firstName" : "Bilbo",
+        "lastName" : "Baggins",
+        "isActivated" : 1
+    }
+]

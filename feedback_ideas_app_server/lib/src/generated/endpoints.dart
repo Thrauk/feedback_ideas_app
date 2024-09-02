@@ -68,6 +68,30 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['idea'] as _i2.IdeaEndpoint)
                   .getLoggedUserIdeas(session),
         ),
+        'getIdeas': _i1.MethodConnector(
+          name: 'getIdeas',
+          params: {
+            'sortBy': _i1.ParameterDescription(
+              name: 'sortBy',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'sortOrder': _i1.ParameterDescription(
+              name: 'sortOrder',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['idea'] as _i2.IdeaEndpoint).getIdeas(
+            session,
+            sortBy: params['sortBy'],
+            sortOrder: params['sortOrder'],
+          ),
+        ),
       },
     );
     connectors['user'] = _i1.EndpointConnector(

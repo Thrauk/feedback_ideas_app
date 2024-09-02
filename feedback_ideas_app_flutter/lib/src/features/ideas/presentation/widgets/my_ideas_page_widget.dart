@@ -104,15 +104,19 @@ class _MyIdeasPageWidgetState extends State<MyIdeasPageWidget> {
                   CircularProgressIndicator()
                 else
                   ...ideas.map(
-                    (idea) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: ShadCard(
-                        footer: Text(DateFormat('yyyy-MM-dd – kk:mm').format(idea.postedAt)),
-                        width: double.infinity,
-                        title: Text(idea.title),
-                        description: Text(idea.content),
-                      ),
-                    ),
+                    (idea) {
+                      // final date = idea.postedAt;
+                      // date.copyWith(isUtc: true);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ShadCard(
+                          footer: Text(DateFormat('yyyy-MM-dd – kk:mm').format(idea.postedAt.toLocal())),
+                          width: double.infinity,
+                          title: Text(idea.title),
+                          description: Text(idea.content),
+                        ),
+                      );
+                    },
                   )
               ],
             ),

@@ -11,10 +11,12 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
 import 'package:feedback_ideas_app_client/src/protocol/ideas/idea.dart' as _i3;
-import 'package:feedback_ideas_app_client/src/protocol/auth/login_response.dart'
+import 'package:feedback_ideas_app_client/src/protocol/ideas/idea%20extended.dart'
     as _i4;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i5;
-import 'protocol.dart' as _i6;
+import 'package:feedback_ideas_app_client/src/protocol/auth/login_response.dart'
+    as _i5;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i6;
+import 'protocol.dart' as _i7;
 
 /// {@category Endpoint}
 class EndpointIdea extends _i1.EndpointRef {
@@ -42,6 +44,19 @@ class EndpointIdea extends _i1.EndpointRef {
         'getLoggedUserIdeas',
         {},
       );
+
+  _i2.Future<List<_i4.IdeaExtended>> getIdeas({
+    required String sortBy,
+    required int sortOrder,
+  }) =>
+      caller.callServerEndpoint<List<_i4.IdeaExtended>>(
+        'idea',
+        'getIdeas',
+        {
+          'sortBy': sortBy,
+          'sortOrder': sortOrder,
+        },
+      );
 }
 
 /// {@category Endpoint}
@@ -68,11 +83,11 @@ class EndpointUser extends _i1.EndpointRef {
         },
       );
 
-  _i2.Future<_i4.LoginResponse> login({
+  _i2.Future<_i5.LoginResponse> login({
     required String email,
     required String password,
   }) =>
-      caller.callServerEndpoint<_i4.LoginResponse>(
+      caller.callServerEndpoint<_i5.LoginResponse>(
         'user',
         'login',
         {
@@ -92,10 +107,10 @@ class EndpointUser extends _i1.EndpointRef {
 
 class _Modules {
   _Modules(Client client) {
-    auth = _i5.Caller(client);
+    auth = _i6.Caller(client);
   }
 
-  late final _i5.Caller auth;
+  late final _i6.Caller auth;
 }
 
 class Client extends _i1.ServerpodClient {
@@ -113,7 +128,7 @@ class Client extends _i1.ServerpodClient {
     Function(_i1.MethodCallContext)? onSucceededCall,
   }) : super(
           host,
-          _i6.Protocol(),
+          _i7.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,

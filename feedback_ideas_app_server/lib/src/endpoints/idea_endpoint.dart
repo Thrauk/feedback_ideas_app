@@ -4,6 +4,8 @@ import 'package:feedback_ideas_app_server/src/repository/auth/jwt_repository.dar
 import 'package:feedback_ideas_app_server/src/repository/auth/smtp_repository.dart';
 import 'package:feedback_ideas_app_server/src/repository/idea/idea_repository.dart';
 import 'package:feedback_ideas_app_server/src/repository/user/user_repository.dart';
+import 'package:feedback_ideas_app_server/src/services/sqlite_service.dart';
+import 'package:feedback_ideas_app_server/src/services/sqlite_utils.dart';
 import 'package:feedback_ideas_app_server/src/utils/authentication_info_exteded.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -38,5 +40,18 @@ class IdeaEndpoint extends Endpoint {
     final authInfo = (await session.authenticated)! as AuthenticationInfoExteded;
     final currentUserUuid = authInfo.userUuid;
     return IdeaRepository().getIdeasByAuthorUuid(authorUuid: currentUserUuid);
+  }
+
+  Future<List<IdeaExtended>> getIdeas(
+    Session session, {
+    String sortBy = 'postedAt',
+    int sortOrder = 1,
+  }) async {
+    return IdeaRepository().getIdeas(
+      orderBy: SqlOrderBy(
+        key: sortBy,
+        orderType: sortOrder == 0 ? SqlOrderType.ascending : SqlOrderType.descending,
+      ),
+    );
   }
 }

@@ -1,0 +1,13 @@
+class: IdeaExtended
+fields:
+  id: int?
+  uuid: String,
+  postedAt: DateTime,
+  title: String,
+  content: String,
+  authorUuid: String,
+  authorFirstName: String,
+  authorLastName: String,
+  votesNumber: int,
+  commentsNumber: int,
+  votedByCurrentUser: int

@@ -2,11 +2,13 @@ class DatabaseConstants {
   static const String userTable = 'users';
   static const String activationCodeTable = 'activation_codes';
   static const String ideaTable = 'ideas';
+  static const String ideaVoteTable = 'idea_vote';
 
   static Map<String, String> creationQueries = {
     userTable: createUserTableQuery,
     activationCodeTable: createActivationCodeTableQuery,
     ideaTable: createIdeasTableQuery,
+    ideaVoteTable: ideaVoteTable,
   };
 
   static const String createUserTableQuery = '''
@@ -26,7 +28,7 @@ class DatabaseConstants {
         id INTEGER NOT NULL PRIMARY KEY,
         userUuid TEXT NOT NULL,
         activationCode TEXT NOT NULL,
-        expiryDate TEXT NOT NULL,
+        expiryDate DATETIME NOT NULL,
         isUsed INTEGER NOT NULL DEFAULT 0,
         FOREIGN KEY (userUuid) REFERENCES $userTable(uuid)
       );
@@ -36,13 +38,24 @@ class DatabaseConstants {
       CREATE TABLE $ideaTable (
         id INTEGER NOT NULL PRIMARY KEY,
         uuid TEXT NOT NULL UNIQUE,
-        postedAt TEXT NOT NULL,
+        postedAt DATETIME NOT NULL,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
         authorUuid TEXT NOT NULL,
         votesNumber INTEGER DEFAULT 0,
         commentsNumber INTEGER DEFAULT 0,
         FOREIGN KEY (authorUuid) REFERENCES $userTable(uuid)
+      );
+  ''';
+
+  static const String createIdeasVoteTableQuery = '''
+      CREATE TABLE $ideaVoteTable (
+        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        userUuid TEXT NOT NULL,
+        ideaUuid TEXT NOT NULL,
+        votedAt DATETIME NOT NULL,
+        FOREIGN KEY (userUuid) REFERENCES $userTable(uuid),
+        FOREIGN KEY (ideaUuid) REFERENCES $ideaTable(uuid)
       );
   ''';
 }

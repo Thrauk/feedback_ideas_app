@@ -1,22 +1,7 @@
 import 'package:feedback_ideas_app_server/src/constants/database_constants.dart';
+import 'package:feedback_ideas_app_server/src/services/sqlite_utils.dart';
+import 'package:feedback_ideas_app_server/src/test_data/test_data_loader.dart';
 import 'package:sqlite3/sqlite3.dart';
-
-enum SqlOrderType {
-  ascending('ASC'),
-  descending('DESC');
-
-  const SqlOrderType(this.value);
-  final String value;
-}
-
-class SqlOrderBy {
-  const SqlOrderBy({
-    required this.key,
-    required this.orderType,
-  });
-  final String key;
-  final SqlOrderType orderType;
-}
 
 class SqliteService {
   static late final SqliteService _singleton; // = SqliteService._internal();
@@ -26,9 +11,9 @@ class SqliteService {
     return _singleton;
   }
 
-  static void initialize({
+  static Future<void> initialize({
     required String databasePath,
-  }) {
+  }) async {
     final Database database = sqlite3.open(
       databasePath,
     );
@@ -38,6 +23,7 @@ class SqliteService {
         database.execute(
           DatabaseConstants.creationQueries[table]!,
         );
+        TestDataLoader.loadDevelopmentData(table);
       }
     }
 
@@ -164,6 +150,41 @@ class SqliteService {
       '''SELECT * FROM $tableName 
         ${conditions.isNotEmpty ? 'WHERE($conditionsString) ' : ''}
         ${orderBy != null ? 'ORDER BY ${orderBy.key} ${orderBy.orderType.value}' : ''}
+      ''',
+    );
+    final queryResult = queryResultAll
+        .toList()
+        .map(
+          (row) => Map<String, dynamic>.from(row),
+        )
+        .toList();
+    return queryResult;
+  }
+
+  List<Map<String, dynamic>> selectSingleJoin({
+    required String tableName,
+    required String joinTable,
+    required List<SqlJoinTableField> joinTableFields,
+    required Map<String, dynamic> joinConditions,
+    List<String> tableFields = const [],
+    Map<String, dynamic> conditions = const <String, dynamic>{},
+    SqlOrderBy? orderBy,
+  }) {
+    final String conditionsString = conditions.entries.map((entry) => "${entry.key}='${entry.value}'").join(' AND ');
+    final String joinConditionsString =
+        joinConditions.entries.map((entry) => "$tableName.${entry.key}=$joinTable.${entry.value}").join(' AND ');
+    final List<String> tableFieldsFull = tableFields.map((e) => '$tableName.$e').toList();
+    final List<String> joinTableFieldsFull = joinTableFields.map((field) => field.getSelectQuery(joinTable)).toList();
+    final String selectString =
+        '${tableFields.isEmpty ? '$tableName.*' : tableFieldsFull.join(',')},${joinTableFieldsFull.join(',')}';
+    final queryResultAll = queryDatabase(
+      '''SELECT 
+          $selectString
+        FROM $tableName
+        JOIN $joinTable 
+        ON $joinConditionsString
+        ${conditions.isNotEmpty ? 'WHERE($conditionsString) ' : ''}
+        ${orderBy != null ? 'ORDER BY $tableName.${orderBy.key} ${orderBy.orderType.value}' : ''}
       ''',
     );
     final queryResult = queryResultAll

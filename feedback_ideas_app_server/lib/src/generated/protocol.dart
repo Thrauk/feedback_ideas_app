@@ -24,12 +24,15 @@ import 'auth/exceptions/register/register_exception.dart' as _i10;
 import 'auth/exceptions/register/register_exception_type.dart' as _i11;
 import 'auth/jwt_payload.dart' as _i12;
 import 'auth/login_response.dart' as _i13;
-import 'ideas/idea.dart' as _i14;
-import 'ideas/idea_comment.dart' as _i15;
-import 'ideas/idea_vote.dart' as _i16;
-import 'user/user.dart' as _i17;
+import 'ideas/idea extended.dart' as _i14;
+import 'ideas/idea.dart' as _i15;
+import 'ideas/idea_comment.dart' as _i16;
+import 'ideas/idea_vote.dart' as _i17;
+import 'user/user.dart' as _i18;
 import 'package:feedback_ideas_app_server/src/generated/ideas/idea.dart'
-    as _i18;
+    as _i19;
+import 'package:feedback_ideas_app_server/src/generated/ideas/idea%20extended.dart'
+    as _i20;
 export 'auth/activation_code.dart';
 export 'auth/auth_error.dart';
 export 'auth/exceptions/activate_account/activate_account_exception.dart';
@@ -40,6 +43,7 @@ export 'auth/exceptions/register/register_exception.dart';
 export 'auth/exceptions/register/register_exception_type.dart';
 export 'auth/jwt_payload.dart';
 export 'auth/login_response.dart';
+export 'ideas/idea extended.dart';
 export 'ideas/idea.dart';
 export 'ideas/idea_comment.dart';
 export 'ideas/idea_vote.dart';
@@ -93,17 +97,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i13.LoginResponse) {
       return _i13.LoginResponse.fromJson(data) as T;
     }
-    if (t == _i14.Idea) {
-      return _i14.Idea.fromJson(data) as T;
+    if (t == _i14.IdeaExtended) {
+      return _i14.IdeaExtended.fromJson(data) as T;
     }
-    if (t == _i15.IdeaComment) {
-      return _i15.IdeaComment.fromJson(data) as T;
+    if (t == _i15.Idea) {
+      return _i15.Idea.fromJson(data) as T;
     }
-    if (t == _i16.IdeaVote) {
-      return _i16.IdeaVote.fromJson(data) as T;
+    if (t == _i16.IdeaComment) {
+      return _i16.IdeaComment.fromJson(data) as T;
     }
-    if (t == _i17.User) {
-      return _i17.User.fromJson(data) as T;
+    if (t == _i17.IdeaVote) {
+      return _i17.IdeaVote.fromJson(data) as T;
+    }
+    if (t == _i18.User) {
+      return _i18.User.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.ActivationCode?>()) {
       return (data != null ? _i4.ActivationCode.fromJson(data) : null) as T;
@@ -139,17 +146,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i13.LoginResponse?>()) {
       return (data != null ? _i13.LoginResponse.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i14.Idea?>()) {
-      return (data != null ? _i14.Idea.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i14.IdeaExtended?>()) {
+      return (data != null ? _i14.IdeaExtended.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i15.IdeaComment?>()) {
-      return (data != null ? _i15.IdeaComment.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i15.Idea?>()) {
+      return (data != null ? _i15.Idea.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i16.IdeaVote?>()) {
-      return (data != null ? _i16.IdeaVote.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i16.IdeaComment?>()) {
+      return (data != null ? _i16.IdeaComment.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i17.User?>()) {
-      return (data != null ? _i17.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i17.IdeaVote?>()) {
+      return (data != null ? _i17.IdeaVote.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i18.User?>()) {
+      return (data != null ? _i18.User.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<Map<String, String>?>()) {
       return (data != null
@@ -161,9 +171,14 @@ class Protocol extends _i1.SerializationManagerServer {
       return (data as List).map((e) => deserialize<String>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i18.Idea>) {
-      return (data as List).map((e) => deserialize<_i18.Idea>(e)).toList()
+    if (t == List<_i19.Idea>) {
+      return (data as List).map((e) => deserialize<_i19.Idea>(e)).toList()
           as dynamic;
+    }
+    if (t == List<_i20.IdeaExtended>) {
+      return (data as List)
+          .map((e) => deserialize<_i20.IdeaExtended>(e))
+          .toList() as dynamic;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -211,16 +226,19 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i13.LoginResponse) {
       return 'LoginResponse';
     }
-    if (data is _i14.Idea) {
+    if (data is _i14.IdeaExtended) {
+      return 'IdeaExtended';
+    }
+    if (data is _i15.Idea) {
       return 'Idea';
     }
-    if (data is _i15.IdeaComment) {
+    if (data is _i16.IdeaComment) {
       return 'IdeaComment';
     }
-    if (data is _i16.IdeaVote) {
+    if (data is _i17.IdeaVote) {
       return 'IdeaVote';
     }
-    if (data is _i17.User) {
+    if (data is _i18.User) {
       return 'User';
     }
     return super.getClassNameForObject(data);
@@ -262,17 +280,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'LoginResponse') {
       return deserialize<_i13.LoginResponse>(data['data']);
     }
+    if (data['className'] == 'IdeaExtended') {
+      return deserialize<_i14.IdeaExtended>(data['data']);
+    }
     if (data['className'] == 'Idea') {
-      return deserialize<_i14.Idea>(data['data']);
+      return deserialize<_i15.Idea>(data['data']);
     }
     if (data['className'] == 'IdeaComment') {
-      return deserialize<_i15.IdeaComment>(data['data']);
+      return deserialize<_i16.IdeaComment>(data['data']);
     }
     if (data['className'] == 'IdeaVote') {
-      return deserialize<_i16.IdeaVote>(data['data']);
+      return deserialize<_i17.IdeaVote>(data['data']);
     }
     if (data['className'] == 'User') {
-      return deserialize<_i17.User>(data['data']);
+      return deserialize<_i18.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

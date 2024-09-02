@@ -4,7 +4,9 @@ import 'package:feedback_ideas_app_flutter/src/core/widgets/navbar/desktop_navba
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/activation_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/authentication/presentation/screens/login_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/feed/main_screen.dart';
+import 'package:feedback_ideas_app_flutter/src/features/ideas/presentation/screens/all_ideas_screen.dart';
 import 'package:feedback_ideas_app_flutter/src/features/ideas/presentation/screens/my_ideas_screen.dart';
+import 'package:feedback_ideas_app_flutter/src/features/ideas/presentation/widgets/all_ideas_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,9 +44,9 @@ final GoRouter mainRouter = GoRouter(
       },
       routes: [
         GoRoute(
-          path: MainScreen.route,
+          path: AllIdeasScreen.route,
           pageBuilder: (context, state) => NoTransitionPage(
-            child: MainScreen.builder(context, state),
+            child: AllIdeasScreen.builder(context, state),
           ),
         ),
         GoRoute(
@@ -65,10 +67,10 @@ final GoRouter mainRouter = GoRouter(
       if (onAuthPage) {
         return null;
       }
-      return RegisterScreen.route;
+      return LoginScreen.route;
     }
     if (loggedIn && onAuthPage) {
-      return MainScreen.route;
+      return AllIdeasScreen.route;
     }
     return null;
   },

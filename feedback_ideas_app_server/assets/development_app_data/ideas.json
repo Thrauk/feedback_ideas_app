@@ -1,0 +1,37 @@
+[
+    {
+        "uuid": "a744c170-66cb-11ef-99c8-eb6434a16d60",
+        "postedAt": "2024-07-30T12:30:34.247180Z",
+        "title": "Revolutionizing Remote Workspaces",
+        "content": "An idea to create a VR platform for remote work that enhances collaboration and productivity with immersive tools.",
+        "authorUuid": "95edab30-66cb-11ef-99c8-eb6434a16d60"
+    },
+    {
+        "uuid": "b234d570-66cb-11ef-99c8-eb6434a16d61",
+        "postedAt": "2024-07-31T14:20:12.247180Z",
+        "title": "Eco-Friendly Packaging Solutions",
+        "content": "Developing biodegradable and reusable packaging solutions to reduce plastic waste in the e-commerce industry.",
+        "authorUuid": "95edab30-66cb-11ef-99c8-eb6434a16d60"
+    },
+    {
+        "uuid": "c12fc280-66cb-11ef-99c8-eb6434a16d62",
+        "postedAt": "2024-07-01T09:15:50.247180Z",
+        "title": "Smart Fitness Tracker Integration",
+        "content": "A concept for integrating fitness trackers with personalized health advice apps that offer meal suggestions and workout plans.",
+        "authorUuid": "95edab30-66cb-11ef-99c8-eb6434a16d60"
+    },
+    {
+        "uuid": "d451e890-66cb-11ef-99c8-eb6434a16d63",
+        "postedAt": "2024-07-02T18:45:00.247180Z",
+        "title": "Urban Gardening Kits for Apartments",
+        "content": "Creating all-in-one urban gardening kits for small spaces, designed for easy setup and maintenance in apartments.",
+        "authorUuid": "95edab30-66cb-11ef-99c8-eb6434a16d60"
+    },
+    {
+        "uuid": "e322f510-66cb-11ef-99c8-eb6434a16d64",
+        "postedAt": "2024-07-03T07:25:34.247180Z",
+        "title": "AI-Powered Customer Support Chatbot",
+        "content": "Developing an AI-powered chatbot that learns from customer interactions to provide more accurate and efficient support.",
+        "authorUuid": "95edab30-66cb-11ef-99c8-eb6434a16d60"
+    }
+]

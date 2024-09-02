@@ -1,6 +1,7 @@
 import 'package:feedback_ideas_app_server/src/constants/database_constants.dart';
 import 'package:feedback_ideas_app_server/src/generated/protocol.dart';
 import 'package:feedback_ideas_app_server/src/services/sqlite_service.dart';
+import 'package:feedback_ideas_app_server/src/services/sqlite_utils.dart';
 import 'package:uuid/uuid.dart';
 
 class IdeaRepository {
@@ -58,6 +59,36 @@ class IdeaRepository {
     final List<Idea> ideas = queryResult
         .map(
           (item) => Idea.fromJson(item),
+        )
+        .toList();
+    return ideas;
+  }
+
+  List<IdeaExtended> getIdeas({
+    SqlOrderBy? orderBy,
+    String? searchQuery,
+  }) {
+    final queryResult = _sqliteService.selectSingleJoin(
+      tableName: DatabaseConstants.ideaTable,
+      joinTable: DatabaseConstants.userTable,
+      joinTableFields: [
+        SqlJoinTableField(
+          fieldName: 'firstName',
+          alias: 'authorFirstName',
+        ),
+        SqlJoinTableField(
+          fieldName: 'lastName',
+          alias: 'authorLastName',
+        ),
+      ],
+      joinConditions: {
+        'authorUuid': 'uuid',
+      },
+      orderBy: orderBy,
+    );
+    final List<IdeaExtended> ideas = queryResult
+        .map(
+          (item) => IdeaExtended.fromJson(item),
         )
         .toList();
     return ideas;
