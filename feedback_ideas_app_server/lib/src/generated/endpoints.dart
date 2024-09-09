@@ -76,6 +76,24 @@ class Endpoints extends _i1.EndpointDispatch {
             ideaUuid: params['ideaUuid'],
           ),
         ),
+        'removeVote': _i1.MethodConnector(
+          name: 'removeVote',
+          params: {
+            'ideaUuid': _i1.ParameterDescription(
+              name: 'ideaUuid',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['idea'] as _i2.IdeaEndpoint).removeVote(
+            session,
+            ideaUuid: params['ideaUuid'],
+          ),
+        ),
         'getLoggedUserIdeas': _i1.MethodConnector(
           name: 'getLoggedUserIdeas',
           params: {},

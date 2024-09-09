@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:feedback_ideas_app_server/src/constants/database_constants.dart';
 import 'package:feedback_ideas_app_server/src/generated/protocol.dart';
 import 'package:feedback_ideas_app_server/src/services/sqlite_service.dart';
@@ -144,16 +146,46 @@ class IdeaRepository {
     return ideas;
   }
 
+  Idea getIdea({required String ideaUuid}) {
+    final queryResult = SqliteService().queryRowByConditions(
+      tableName: DatabaseConstants.ideaTable,
+      conditions: {
+        'uuid': ideaUuid,
+      },
+    );
+
+    return Idea.fromJson(queryResult!);
+  }
+
+  IdeaVote? getIdeaVote({required String ideaUuid, required String userUuid}) {
+    final queryResult = SqliteService().queryRowByConditions(
+      tableName: DatabaseConstants.ideaVoteTable,
+      conditions: {
+        'ideaUuid': ideaUuid,
+        'userUuid': userUuid,
+      },
+    );
+
+    return queryResult == null ? null : IdeaVote.fromJson(queryResult);
+  }
+
   void voteIdea({
-    required String userId,
+    required String userUuid,
     required String ideaUuid,
   }) {
+    final bool alreadyVoted = getIdeaVote(ideaUuid: ideaUuid, userUuid: userUuid) != null;
+    if (alreadyVoted) {
+      return; // Could also throw an error
+    }
 
     final IdeaVote item = IdeaVote(
-      userUuid: userId,
+      userUuid: userUuid,
       ideaUuid: ideaUuid,
       votedAt: DateTime.now(),
     );
+
+    final Idea idea = getIdea(ideaUuid: ideaUuid);
+    final int votesNumber = idea.votesNumber + 1;
 
     final data = item.toJson();
     data.remove(_idColumnName);
@@ -161,6 +193,42 @@ class IdeaRepository {
     _sqliteService.insertIntoTable(
       table: DatabaseConstants.ideaVoteTable,
       data: data,
+    );
+
+    updateIdeaVoteNumber(votesNumber, ideaUuid);
+  }
+
+  void updateIdeaVoteNumber(int votesNumber, String ideaUuid) {
+    _sqliteService.updateTableValue(
+      table: DatabaseConstants.ideaTable,
+      updateValues: {
+        'votesNumber': votesNumber,
+      },
+      conditions: {
+        'uuid': ideaUuid,
+      },
+    );
+  }
+
+  void removeVote({
+    required String userUuid,
+    required String ideaUuid,
+  }) {
+    final IdeaVote? vote = getIdeaVote(ideaUuid: ideaUuid, userUuid: userUuid);
+    if (vote == null) {
+      return;
+
+      /// Could also throw error. Trying to remove a non existing vote.
+    }
+    final Idea idea = getIdea(ideaUuid: ideaUuid);
+    final int votesNumber = max(0, idea.votesNumber - 1);
+    updateIdeaVoteNumber(votesNumber, ideaUuid);
+    _sqliteService.deleteTableRow(
+      table: DatabaseConstants.ideaVoteTable,
+      conditions: {
+        'userUuid': userUuid,
+        'ideaUuid': ideaUuid,
+      },
     );
   }
 }

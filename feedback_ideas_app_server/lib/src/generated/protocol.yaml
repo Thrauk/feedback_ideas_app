@@ -1,6 +1,7 @@
 idea:
   - postIdea:
   - voteIdea:
+  - removeVote:
   - getLoggedUserIdeas:
   - getIdeas:
 user:

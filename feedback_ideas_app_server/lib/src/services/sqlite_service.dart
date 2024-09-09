@@ -87,6 +87,19 @@ class SqliteService {
     statement.dispose();
   }
 
+  void deleteTableRow({
+    required String table,
+    required Map<String, dynamic> conditions,
+  }) {
+    final conditionsStatement = SqliteQueryHelper.buildConditionsString(conditions);
+    final String statementString = '''
+      DELETE FROM $table WHERE $conditionsStatement
+    ''';
+    final statement = _db.prepare(statementString);
+    statement.execute();
+    statement.dispose();
+  }
+
   /// Check if there are rows that meet exactly one condition
   bool checkIfValueExists({
     required String tableName,

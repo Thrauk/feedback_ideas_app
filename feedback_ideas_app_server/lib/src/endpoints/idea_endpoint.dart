@@ -45,7 +45,27 @@ class IdeaEndpoint extends Endpoint {
       final currentUserUuid = authInfo.userUuid;
 
       IdeaRepository().voteIdea(
-        userId: currentUserUuid,
+        userUuid: currentUserUuid,
+        ideaUuid: ideaUuid,
+      );
+    } catch (e) {
+      print(e);
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> removeVote(
+    Session session, {
+    required String ideaUuid,
+  }) async {
+    try {
+      final authInfo = (await session.authenticated)! as AuthenticationInfoExteded;
+      final currentUserUuid = authInfo.userUuid;
+
+      IdeaRepository().removeVote(
+        userUuid: currentUserUuid,
         ideaUuid: ideaUuid,
       );
     } catch (e) {

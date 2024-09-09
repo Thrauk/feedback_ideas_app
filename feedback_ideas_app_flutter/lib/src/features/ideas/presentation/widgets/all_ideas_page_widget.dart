@@ -73,7 +73,15 @@ class _AllIdeasPageWidgetState extends State<AllIdeasPageWidget> {
                                   Icons.thumb_up,
                                   color: idea.votedByCurrentUser == 1 ? Colors.orange : null,
                                 ),
-                                onPressed: () {},
+                                onPressed: () async {
+                                  if (idea.votedByCurrentUser == 1) {
+                                    await serverpodClient.idea.removeVote(ideaUuid: idea.uuid);
+                                    _getMyIdeas();
+                                  } else {
+                                    await serverpodClient.idea.voteIdea(ideaUuid: idea.uuid);
+                                    _getMyIdeas();
+                                  }
+                                },
                               ),
                               Text('Votes ${idea.votesNumber}'),
                             ],

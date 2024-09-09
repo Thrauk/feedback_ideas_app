@@ -45,6 +45,13 @@ class EndpointIdea extends _i1.EndpointRef {
         {'ideaUuid': ideaUuid},
       );
 
+  _i2.Future<bool> removeVote({required String ideaUuid}) =>
+      caller.callServerEndpoint<bool>(
+        'idea',
+        'removeVote',
+        {'ideaUuid': ideaUuid},
+      );
+
   _i2.Future<List<_i3.Idea>> getLoggedUserIdeas() =>
       caller.callServerEndpoint<List<_i3.Idea>>(
         'idea',
